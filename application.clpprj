@@ -1,0 +1,278 @@
+<?xml version='1.0' encoding='utf-8'?>
+<project name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/application.clpprj">
+ <settings>
+  <PM_URL><![CDATA[http://localhost/application]]></PM_URL>
+  <PM_HOME_URL><![CDATA[http://localhost/application]]></PM_HOME_URL>
+  <PM_LIBS><![CDATA[]]></PM_LIBS>
+  <PM_FTP_CONNECTION><![CDATA[]]></PM_FTP_CONNECTION>
+  <PM_FTP_DIR><![CDATA[]]></PM_FTP_DIR>
+  <PM_FTP_UPLOAD_ON_SAVE><![CDATA[INT:0]]></PM_FTP_UPLOAD_ON_SAVE>
+  <PM_LANGUAGE><![CDATA[]]></PM_LANGUAGE>
+ </settings>
+ <removed value=";"/>
+ <added value=""/>
+ <lastopfiles>
+  <file name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/app/Http/Controllers/User/UserController.php"/>
+  <file name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/app/Http/Controllers/User/ProfileController.php"/>
+  <lastactivefile name=""/>
+ </lastopfiles>
+ <errors version="1.12.0"/>
+ <cakedata/>
+ <dplmenupath/>
+ <laravael>
+  <facade name="app" class="App"/>
+  <facade name="auth" class="Auth"/>
+  <facade name="blade.compiler" class="Blade"/>
+  <facade name="cache" class="Cache"/>
+  <facade name="config" class="Config"/>
+  <facade name="cookie" class="Cookie"/>
+  <facade name="encrypter" class="Crypt"/>
+  <facade name="db" class="DB"/>
+  <facade name="date" class="Date"/>
+  <facade name="events" class="Event"/>
+  <facade name="Facade does not implement getFacadeAccessor method." class="Facade"/>
+  <facade name="files" class="File"/>
+  <facade name="hash" class="Hash"/>
+  <facade name="image" class="Image"/>
+  <facade name="translator" class="Lang"/>
+  <facade name="log" class="Log"/>
+  <facade name="mail.manager" class="Mail"/>
+  <facade name="auth.password" class="Password"/>
+  <facade name="queue" class="Queue"/>
+  <facade name="redirect" class="Redirect"/>
+  <facade name="redis" class="Redis"/>
+  <facade name="request" class="Request"/>
+  <facade name="router" class="Route"/>
+  <facade name="db.schema" class="Schema"/>
+  <facade name="session" class="Session"/>
+  <facade name="filesystem" class="Storage"/>
+  <facade name="url" class="URL"/>
+  <facade name="validator" class="Validator"/>
+  <facade name="view" class="View"/>
+  <file name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/laravel/framework/src/Illuminate/Cache/CacheServiceProvider.php">
+   <type name="memcached.connector" class="MemcachedConnector"/>
+  </file>
+  <file name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/laravel/framework/src/Illuminate/Database/DatabaseServiceProvider.php">
+   <type name="db.transactions" class="DatabaseTransactionsManager"/>
+  </file>
+  <file name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/laravel/framework/src/Illuminate/Filesystem/FilesystemServiceProvider.php">
+   <type name="files" class="Filesystem"/>
+  </file>
+  <file name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/laravel/framework/src/Illuminate/View/ViewServiceProvider.php">
+   <type name="view.engine.resolver" class="EngineResolver"/>
+  </file>
+  <file name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/laravel/tinker/src/TinkerServiceProvider.php">
+   <type name="command.tinker" class="TinkerCommand"/>
+  </file>
+ </laravael>
+ <smartyassings/>
+ <twigtemplate/>
+ <yiidata/>
+ <todoblock>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/public/assets/admin/build/js/intlTelInput.js">
+   <todo name="TODO: this should just be the current instances" pos="25;457"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/public/assets/admin/js/jquery-sortable.js">
+   <todo name="TODO is this needed?" pos="38;423"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/public/assets/templates/basic/js/jquery.validate.js">
+   <todo name="TODO find a way to support input types date, datetime, datetime-local, month, time and week" pos="4;1528"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/dflydev/dot-access-data/src/Data.php">
+   <todo name="TODO: Is this really what we want to do" pos="13;66"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/ezyang/htmlpurifier/library/HTMLPurifier.php">
+   <todo name="TODO: make the config merge in, instead of replace" pos="10;147"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/ezyang/htmlpurifier/library/HTMLPurifier/AttrDef/CSS/ImportantDecorator.php">
+   <todo name="TODO: optimization: test directly for !important and ! important" pos="10;38"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/ezyang/htmlpurifier/library/HTMLPurifier/CSSDefinition.php">
+   <todo name="TODO: support SLASH syntax" pos="9;444"/>
+   <todo name="TODO: Is this htmlspecialchars() call really necessary" pos="18;531"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/ezyang/htmlpurifier/library/HTMLPurifier/ChildDef/List.php">
+   <todo name="ToDo: Make this more robust in the case of not ol/ul" pos="17;70"/>
+   <todo name="ToDo" pos="93;80"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/ezyang/htmlpurifier/library/HTMLPurifier/ChildDef/Required.php">
+   <todo name="ToDo: Make configurable" pos="17;95"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/ezyang/htmlpurifier/library/HTMLPurifier/HTMLModule/Scripting.php">
+   <todo name="TODO: create custom child-definition for noscript that" pos="9;42"/>
+   <todo name="TODO: convert this to new syntax, main problem is getting" pos="9;48"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/ezyang/htmlpurifier/library/HTMLPurifier/HTMLModuleManager.php">
+   <todo name="TODO:" pos="18;421"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/ezyang/htmlpurifier/library/HTMLPurifier/Printer/ConfigForm.php">
+   <todo name="TODO does this need a break" pos="21;322"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/ezyang/htmlpurifier/library/HTMLPurifier/Strategy/FixNesting.php">
+   <todo name="ToDo: I don't think it matters if it's def or" pos="25;121"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/ezyang/htmlpurifier/library/HTMLPurifier/Zipper.php">
+   <todo name="ToDo: Maybe it's more user friendly" pos="34;13"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/guzzlehttp/guzzle/src/Client.php">
+   <todo name="todo: Do not rely on curl" pos="22;408"/>
+   <todo name="@todo: Do not rely on curl" pos="21;408"/>
+   <todo name="TODO: Add more sink validation" pos="13;433"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/nesbot/carbon/src/Carbon/Carbon.php">
+   <todo name="todoc generated by `composer phpdoc`>" pos="5;24"/>
+   <todo name="todoc>" pos="6;507"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/nesbot/carbon/src/Carbon/CarbonImmutable.php">
+   <todo name="todoc generated by `composer phpdoc`>" pos="5;24"/>
+   <todo name="todoc>" pos="6;507"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/nesbot/carbon/src/Carbon/CarbonInterface.php">
+   <todo name="todoc generated by `composer phpdoc`>" pos="5;36"/>
+   <todo name="todoc>" pos="6;517"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/nesbot/carbon/src/Carbon/Factory.php">
+   <todo name="todoc generated by `composer phpdoc`>" pos="5;20"/>
+   <todo name="todoc>" pos="6;239"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/nesbot/carbon/src/Carbon/FactoryImmutable.php">
+   <todo name="todoc generated by `composer phpdoc`>" pos="5;18"/>
+   <todo name="todoc>" pos="6;237"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/nesbot/carbon/src/Carbon/Lang/ar_Shakl.php">
+   <todo name="TODO add shakl to months" pos="6;19"/>
+   <todo name="@TODO add shakl to months" pos="5;19"/>
+   <todo name="TODO add shakl to translations below" pos="6;54"/>
+   <todo name="@TODO add shakl to translations below" pos="5;54"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/nesbot/carbon/src/Carbon/Traits/Date.php">
+   <todo name="todoc generated by `composer phpdoc`>" pos="5;43"/>
+   <todo name="todoc>" pos="6;524"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/nikic/php-parser/lib/PhpParser/Comment.php">
+   <todo name="TODO: Rename these to include &quot;start&quot;." pos="13;229"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/nikic/php-parser/lib/PhpParser/Internal/TokenStream.php">
+   <todo name="TODO Handle non-space indentation" pos="21;239"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/nikic/php-parser/lib/PhpParser/Lexer/TokenEmulator/AttributeEmulator.php">
+   <todo name="TODO" pos="9;41"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/nikic/php-parser/lib/PhpParser/PrettyPrinter/Standard.php">
+   <todo name="TODO: This is not fully accurate." pos="9;1078"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/nikic/php-parser/lib/PhpParser/PrettyPrinterAbstract.php">
+   <todo name="TODO Add &lt;" pos="13;496"/>
+   <todo name="TODO: Try to preserve formatting" pos="17;727"/>
+   <todo name="TODO: Preserve formatting." pos="25;778"/>
+   <todo name="TODO: Preserve formatting." pos="25;881"/>
+   <todo name="TODO: Support removing single node." pos="13;904"/>
+   <todo name="TODO: FIXUP_NEW_VARIABLE" pos="52;1171"/>
+   <todo name="TODO: FIXUP_NEW_VARIABLE" pos="69;1182"/>
+   <todo name="TODO: &quot;yield&quot; where both key and value are inserted doesn't work" pos="9;1304"/>
+   <todo name="TODO" pos="86;1332"/>
+   <todo name="TODO These need to be treated more carefully" pos="47;1348"/>
+   <todo name="TODO Insertion into empty statement lists." pos="9;1440"/>
+   <todo name="TODO" pos="14;1488"/>
+   <todo name="TODO" pos="67;1509"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/psy/psysh/src/CodeCleaner/CalledClassPass.php">
+   <todo name="todo switch this to actually validate args when we get context-aware code cleaner passes." pos="14;51"/>
+   <todo name="@todo switch this to actually validate args when we get context-aware code cleaner passes." pos="13;51"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/psy/psysh/src/CodeCleaner/PassableByReferencePass.php">
+   <todo name="todo support MethodCall and StaticCall as well." pos="10;39"/>
+   <todo name="@todo support MethodCall and StaticCall as well." pos="9;39"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/psy/psysh/src/CodeCleaner/RequirePass.php">
+   <todo name="todo Shell::handleError would be better here, because we could" pos="14;80"/>
+   <todo name="@todo Shell::handleError would be better here, because we could" pos="13;80"/>
+   <todo name="todo trigger an error as fallback" pos="14;86"/>
+   <todo name="@todo trigger an error as fallback" pos="13;86"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/psy/psysh/src/CodeCleaner/ValidFunctionNamePass.php">
+   <todo name="todo add an &quot;else&quot; here which adds a runtime check for instances where we can't tell" pos="14;47"/>
+   <todo name="@todo add an &quot;else&quot; here which adds a runtime check for instances where we can't tell" pos="13;47"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/psy/psysh/src/Command/DocCommand.php">
+   <todo name="todo this is going to collide with ReflectionMethod ids" pos="18;146"/>
+   <todo name="@todo this is going to collide with ReflectionMethod ids" pos="17;146"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/psy/psysh/src/Command/ListCommand.php">
+   <todo name="todo something cleaner than this :-/" pos="10;128"/>
+   <todo name="@todo something cleaner than this :-/" pos="9;128"/>
+   <todo name="todo ensure that 'functions', 'classes', 'interfaces', 'traits' only accept namespace target" pos="14;266"/>
+   <todo name="@todo ensure that 'functions', 'classes', 'interfaces', 'traits' only accept namespace target" pos="13;266"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/psy/psysh/src/Command/ListCommand/ClassConstantEnumerator.php">
+   <todo name="todo handle ReflectionExtension as well" pos="14;33"/>
+   <todo name="@todo handle ReflectionExtension as well" pos="13;33"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/psy/psysh/src/Configuration.php">
+   <todo name="todo support raw output with interactive input" pos="10;200"/>
+   <todo name="@todo support raw output with interactive input" pos="9;200"/>
+   <todo name="todo mebbe turn this on by default some day" pos="10;861"/>
+   <todo name="@todo mebbe turn this on by default some day" pos="9;861"/>
+   <todo name="todo detect `chsh` != 65001 on Windows and return false" pos="10;974"/>
+   <todo name="@todo detect `chsh` != 65001 on Windows and return false" pos="9;974"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/psy/psysh/src/Formatter/CodeFormatter.php">
+   <todo name="todo something better here" pos="10;71"/>
+   <todo name="@todo something better here" pos="9;71"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/psy/psysh/src/Formatter/SignatureFormatter.php">
+   <todo name="todo Do we want to include the" pos="14;344"/>
+   <todo name="@todo Do we want to include the" pos="13;344"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/psy/psysh/src/Readline/Hoa/File.php">
+   <todo name="TODO manage $callable as a filter" pos="10;191"/>
+   <todo name="@TODO manage $callable as a filter" pos="9;191"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/psy/psysh/src/Shell.php">
+   <todo name="todo should it be possible to have raw output in an interactive run" pos="14;352"/>
+   <todo name="@todo should it be possible to have raw output in an interactive run" pos="13;352"/>
+   <todo name="todo overrides via environment variables (or should these happen in config" pos="10;440"/>
+   <todo name="@todo overrides via environment variables (or should these happen in config" pos="9;440"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/psy/psysh/src/functions.php">
+   <todo name="todo come up with a better way of doing this which doesn't involve injecting input :-P" pos="10;101"/>
+   <todo name="@todo come up with a better way of doing this which doesn't involve injecting input :-P" pos="9;101"/>
+   <todo name="todo Show Presenter / custom casters." pos="10;318"/>
+   <todo name="@todo Show Presenter / custom casters." pos="9;318"/>
+   <todo name="todo this triggers the &quot;exited unexpectedly&quot; logic in the" pos="18;431"/>
+   <todo name="@todo this triggers the &quot;exited unexpectedly&quot; logic in the" pos="17;431"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/razorpay/razorpay/libs/Requests-2.0.4/src/IdnaEncoder.php">
+   <todo name="TODO: this should also check if it's valid for a URL" pos="5;270"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/rmccue/requests/src/IdnaEncoder.php">
+   <todo name="TODO: this should also check if it's valid for a URL" pos="5;270"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/stripe/stripe-php/lib/Dispute.php">
+   <todo name="TODO: add $params to standardize signature" pos="5;72"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/stripe/stripe-php/lib/Exception/ExceptionInterface.php">
+   <todo name="TODO: remove this check once we drop support for PHP 5" pos="1;4"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/symfony/css-selector/XPath/Extension/FunctionExtension.php">
+   <todo name="todo: handle an+b, odd, even" pos="9;96"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/symfony/css-selector/XPath/Extension/HtmlExtension.php">
+   <todo name="todo: in the second half, add &quot;and is not a descendant of that fieldset element's first legend elem" pos="9;102"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/symfony/http-kernel/HttpCache/Store.php">
+   <todo name="TODO the metaStore referenced an entity that doesn't exist in" pos="9;155"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/symfony/mime/Header/ParameterizedHeader.php">
+   <todo name="TODO: text, or something else" pos="13;117"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/symfony/translation/Loader/PoFileLoader.php">
+   <todo name="TODO: this fails when comments or contexts are added" pos="17;89"/>
+  </todofile>
+  <todofile name="/home/mrapollos/Documents/work/property-listing-platform/Files/application/vendor/twilio/sdk/src/Twilio/Http/CurlClient.php">
+   <todo name="TODO: PUT doesn't used anywhere and it has strange implementation. Must investigate later" pos="17;129"/>
+  </todofile>
+ </todoblock>
+ <dbgurls/>
+ <lasttime value="1701443949"/>
+</project>
