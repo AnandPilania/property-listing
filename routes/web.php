@@ -18,6 +18,16 @@ Route::controller('TicketController')->prefix('ticket')->group(function () {
     Route::get('/download/{ticket}', 'ticketDownload')->name('ticket.download');
 });
 
+// User conversations
+Route::controller('GroupchatController')->prefix('conversation')->middleware('auth')->group(function () {
+    Route::get('/', 'index')->name('conversation.index');
+    Route::post('/store', 'store')->name('conversation.store');
+    Route::get('/show/{id}', 'show')->name('conversation.show');
+    Route::get('/add_part/{id}', 'add_part')->name('conversation.add_part');
+    Route::post('/send_message/{conversation_id}', 'send_message')->name('conversation.send_message');
+    Route::post('/search_users/{conversation_id?}', 'search_users')->name('conversation.search_users');
+});
+
 Route::get('app/deposit/confirm/{hash}', 'Gateway\PaymentController@appDepositConfirm')->name('deposit.app.confirm');
 
 Route::controller('SiteController')->group(function () {

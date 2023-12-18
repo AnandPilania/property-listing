@@ -27,6 +27,8 @@ class CreateChatTables extends Migration
             $table->bigInteger('conversation_id')->unsigned();
             $table->bigInteger('messageable_id')->unsigned();
             $table->string('messageable_type');
+            $table->boolean('is_admin')->default(false);
+            $table->boolean('is_creator')->default(false);
             $table->text('settings')->nullable();
             $table->timestamps();
 

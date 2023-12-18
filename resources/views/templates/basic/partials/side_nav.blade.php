@@ -39,6 +39,11 @@ $user = auth()->user();
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('conversation.index') }}" class='{{ Route::is('conversation.index') ? 'active' : '' }}'>
+                        <i class="fa fa-message"></i>@lang('My Conversations')
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('user.property.list') }}" class='{{ Route::is('user.property.list') ? 'active' : '' }}'>
                         <i class="fa fa-list"></i>@lang('My Listings')
                     </a>

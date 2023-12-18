@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Musonza\Chat\Traits\Messageable;
 
 
-class User extends Authenticatable {
+class User extends Authenticatable
+{
+
+    use Messageable;
 
     /**
      * The attributes that should be hidden for arrays.
@@ -29,60 +33,71 @@ class User extends Authenticatable {
     ];
 
 
-    public function loginLogs() {
+    public function loginLogs()
+    {
         return $this->hasMany(UserLogin::class);
     }
 
-    public function transactions() {
+    public function transactions()
+    {
         return $this->hasMany(Transaction::class)->orderBy('id', 'desc');
     }
 
-    public function deposits() {
+    public function deposits()
+    {
         return $this->hasMany(Deposit::class)->where('status', '!=', 0);
     }
 
-    public function withdrawals() {
+    public function withdrawals()
+    {
         return $this->hasMany(Withdrawal::class)->where('status', '!=', 0);
     }
 
-    public function fullname(): Attribute {
+    public function fullname(): Attribute
+    {
         return new Attribute(
-            get: fn() => $this->firstname . ' ' . $this->lastname,
+            get: fn () => $this->firstname . ' ' . $this->lastname,
         );
     }
 
-    public function planSubscribe() {
+    public function planSubscribe()
+    {
         return $this->hasMany(PlanSubscribe::class, 'user_id', 'id');
-
     }
 
     // SCOPES
-    public function scopeActive() {
+    public function scopeActive()
+    {
         return $this->where('status', 1);
     }
 
-    public function scopeBanned() {
+    public function scopeBanned()
+    {
         return $this->where('status', 0);
     }
 
-    public function scopeEmailUnverified() {
+    public function scopeEmailUnverified()
+    {
         return $this->where('ev', 0);
     }
 
-    public function scopeMobileUnverified() {
+    public function scopeMobileUnverified()
+    {
         return $this->where('sv', 0);
     }
 
-    public function scopeEmailVerified() {
+    public function scopeEmailVerified()
+    {
         return $this->where('ev', 1);
     }
 
-    public function scopeMobileVerified() {
+    public function scopeMobileVerified()
+    {
         return $this->where('sv', 1);
     }
 
-    public function scopeWithBalance() {
+    public function scopeWithBalance()
+    {
         return $this->where('balance', '>', 0);
     }
-
 }
