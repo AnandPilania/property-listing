@@ -4,37 +4,37 @@ use Illuminate\Support\Facades\Route;
 
 Route::namespace('User\Auth')->name('user.')->group(function () {
 
-        Route::controller('LoginController')->group(
-            function () {
-                Route::get('/login', 'showLoginForm')->name('login');
-                Route::post('/login', 'login');
-                Route::get('logout', 'logout')->name('logout');
-            }
-        );
+    Route::controller('LoginController')->group(
+        function () {
+            Route::get('/login', 'showLoginForm')->name('login');
+            Route::post('/login', 'login');
+            Route::get('logout', 'logout')->name('logout');
+        }
+    );
 
-        Route::controller('RegisterController')->group(
-            function () {
-                Route::get('register', 'showRegistrationForm')->name('register');
-                Route::post('register', 'register')->middleware('registration.status');
-                Route::post('check-mail', 'checkUser')->name('checkUser');
-            }
-        );
+    Route::controller('RegisterController')->group(
+        function () {
+            Route::get('register', 'showRegistrationForm')->name('register');
+            Route::post('register', 'register')->middleware('registration.status');
+            Route::post('check-mail', 'checkUser')->name('checkUser');
+        }
+    );
 
-        Route::controller('ForgotPasswordController')->group(
-            function () {
-                Route::get('password/reset', 'showLinkRequestForm')->name('password.request');
-                Route::post('password/email', 'sendResetCodeEmail')->name('password.email');
-                Route::get('password/code-verify', 'codeVerify')->name('password.code.verify');
-                Route::post('password/verify-code', 'verifyCode')->name('password.verify.code');
-            }
-        );
-        Route::controller('ResetPasswordController')->group(
-            function () {
-                Route::post('password/reset', 'reset')->name('password.update');
-                Route::get('password/reset/{token}', 'showResetForm')->name('password.reset');
-            }
-        );
-    });
+    Route::controller('ForgotPasswordController')->group(
+        function () {
+            Route::get('password/reset', 'showLinkRequestForm')->name('password.request');
+            Route::post('password/email', 'sendResetCodeEmail')->name('password.email');
+            Route::get('password/code-verify', 'codeVerify')->name('password.code.verify');
+            Route::post('password/verify-code', 'verifyCode')->name('password.verify.code');
+        }
+    );
+    Route::controller('ResetPasswordController')->group(
+        function () {
+            Route::post('password/reset', 'reset')->name('password.update');
+            Route::get('password/reset/{token}', 'showResetForm')->name('password.reset');
+        }
+    );
+});
 
 Route::middleware('auth')->name('user.')->group(function () {
     //authorization
@@ -86,6 +86,7 @@ Route::middleware('auth')->name('user.')->group(function () {
                             Route::post('change-password', 'submitPassword');
 
                             Route::post('profile', 'profileUpdate')->name('profile.update');
+                            Route::post('profile/update_kyc', 'profileKYC')->name('profile.update_kyc');
                         }
                     );
 

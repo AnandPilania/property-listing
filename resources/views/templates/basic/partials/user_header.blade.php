@@ -102,13 +102,13 @@ $languages = App\Models\Language::all();
                                     </li>
 
 
-                                    @auth
+                                    @if(Auth::user() && Auth::user()->doc_kyc_status == 'accepted')
                                     <li>
                                         <a href="{{route('user.property.index')}}" class="theme_btn"><span
                                                 class="btn_title"><i class="fa-solid fa-house"></i> @lang('Add
                                                 Property')</span></a>
                                     </li>
-                                    @endauth
+                                    @endif
                                 </ul>
                             </nav>
                         </div>

@@ -106,4 +106,27 @@ class ProfileController extends Controller
         $notify[] = ['success', 'Profile has been updated successfully'];
         return back()->withNotify($notify);
     }
+
+    public function profileKYC(Request $request)
+    {
+        $this->validate($request, [
+            'doc' => ['required', 'file', new FileTypeValidate(['jpg', 'jpeg', 'png', 'pdf'])],
+            'doc_type_' => 'required',
+        ]);
+        $user = auth()->user();
+        if ($request->hasFile('doc')) {
+            try {
+                $user->doc_kyc_document_type = $request->doc_type_;
+                $user->doc_kyc_status = 'pending';
+                $user->doc_kyc_doc_file = fileUploader($request->doc, getFilePath('UserProfile'));
+            } catch (\Exception $exp) {
+                $notify[] = ['error', 'Couldn\'t upload your KYC image'];
+                return back()->withNotify($notify);
+            }
+        }
+
+        $user->save();
+        $notify[] = ['success', 'KYC has been updated successfully, please await our response.'];
+        return back()->withNotify($notify);
+    }
 }

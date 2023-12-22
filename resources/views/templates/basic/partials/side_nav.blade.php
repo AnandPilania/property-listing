@@ -1,5 +1,5 @@
 @php
-$user = auth()->user();
+    $user = auth()->user();
 @endphp
 <div class="col-xl-4 col-lg-4 mb-5">
     <div class="dashboard_profile">
@@ -7,7 +7,7 @@ $user = auth()->user();
             <div class="dashboard_profile_wrap">
                 <div class="profile_photo">
 
-                    <img src="{{ getImage(getFilePath('UserProfile').'/'.$user->image,getFileSize('UserProfile')) }}"
+                    <img src="{{ getImage(getFilePath('UserProfile') . '/' . $user->image, getFileSize('UserProfile')) }}"
                         alt="agent">
                 </div>
                 <form action="{{ route('user.profile.update') }}" method="POST" enctype="multipart/form-data">
@@ -33,23 +33,31 @@ $user = auth()->user();
                         <i class="fa fa-map-marker"></i> @lang('Dashboard')
                     </a>
                 </li>
+                @if (Auth::user() && Auth::user()->doc_kyc_status == 'accepted')
+                    <li>
+                        <a href="{{ route('user.property.index') }}"
+                            class='{{ Route::is('user.property.index') ? 'active' : '' }}'>
+                            <i class="fa fa-plus"></i>@lang('Add Listing')
+                        </a>
+                    </li>
+                @endif
                 <li>
-                    <a href="{{ route('user.property.index') }}" class='{{ Route::is('user.property.index') ? 'active' : '' }}'>
-                        <i class="fa fa-plus"></i>@lang('Add Listing')
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('conversation.index') }}" class='{{ Route::is('conversation.index') ? 'active' : '' }}'>
+                    <a href="{{ route('conversation.index') }}"
+                        class='{{ Route::is('conversation.index') ? 'active' : '' }}'>
                         <i class="fa fa-message"></i>@lang('My Conversations')
                     </a>
                 </li>
+                @if (Auth::user() && Auth::user()->doc_kyc_status == 'accepted')
+                    <li>
+                        <a href="{{ route('user.property.list') }}"
+                            class='{{ Route::is('user.property.list') ? 'active' : '' }}'>
+                            <i class="fa fa-list"></i>@lang('My Listings')
+                        </a>
+                    </li>
+                @endif
                 <li>
-                    <a href="{{ route('user.property.list') }}" class='{{ Route::is('user.property.list') ? 'active' : '' }}'>
-                        <i class="fa fa-list"></i>@lang('My Listings')
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('user.property.list.wishlist')}}" class='{{ Route::is('user.property.list.wishlist') ? 'active' : '' }}'>
+                    <a href="{{ route('user.property.list.wishlist') }}"
+                        class='{{ Route::is('user.property.list.wishlist') ? 'active' : '' }}'>
                         <i class="fa fa-heart"></i>@lang('Favourite Listings')
                     </a>
                 </li>
@@ -58,25 +66,31 @@ $user = auth()->user();
                         <i class="fas fa fa-life-ring"></i>@lang('My Tickets')
                     </a>
                 </li>
+                @if (Auth::user() && Auth::user()->doc_kyc_status == 'accepted')
+                    <li>
+                        <a href="{{ route('user.inquiry.list') }}"
+                            class='{{ Route::is('user.inquiry.list') ? 'active' : '' }}'>
+                            <i class="fa-regular fa-message"></i>@lang('Property Queries')
+                        </a>
+                    </li>
+                @endif
                 <li>
-                    <a href="{{ route('user.inquiry.list') }}" class='{{ Route::is('user.inquiry.list') ? 'active' : '' }}'>
-                        <i class="fa-regular fa-message"></i>@lang('Property Queries')
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('user.inquiry.myinquirieslist') }}" class='{{ Route::is('user.inquiry.myinquirieslist') ? 'active' : '' }}'>
+                    <a href="{{ route('user.inquiry.myinquirieslist') }}"
+                        class='{{ Route::is('user.inquiry.myinquirieslist') ? 'active' : '' }}'>
                         <i class="fa-regular fa-message"></i>@lang('My Queries')
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('user.profile.setting') }}" class='{{ Route::is('user.profile.setting') ? 'active' : '' }}'>
+                    <a href="{{ route('user.profile.setting') }}"
+                        class='{{ Route::is('user.profile.setting') ? 'active' : '' }}'>
                         <i class="fa fa-user"></i>@lang('Profile')
                     </a>
                 </li>
 
 
                 <li>
-                    <a href="{{ route('user.change.password') }}" class='{{ Route::is('user.change.password') ? 'active' : '' }}'>
+                    <a href="{{ route('user.change.password') }}"
+                        class='{{ Route::is('user.change.password') ? 'active' : '' }}'>
                         <i class="fa fa-lock"></i>@lang('Change Password')
                     </a>
                 </li>
