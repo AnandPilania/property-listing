@@ -25,7 +25,11 @@ Route::controller('GroupchatController')->prefix('conversation')->middleware('au
     Route::get('/show/{id}', 'show')->name('conversation.show');
     Route::get('/add_part/{id}', 'add_part')->name('conversation.add_part');
     Route::post('/send_message/{conversation_id}', 'send_message')->name('conversation.send_message');
-    Route::post('/search_users/{conversation_id?}', 'search_users')->name('conversation.search_users');
+    Route::get('/search_users/{conversation_id?}', 'search_users')->name('conversation.search_users');
+    Route::get('/invite_users/{conversation_id}/{user_id}', 'invite_users')->name('conversation.invite_users');
+    Route::get('/accept_invite/{conversation_id}/{user_id}', 'accept_invite')->name('conversation.accept_invite');
+    Route::get('/decline_invite/{conversation_id}/{user_id}', 'decline_invite')->name('conversation.decline_invite');
+    Route::get('/leave_group/{conversation_id}/{user_id}', 'leave_group')->name('conversation.leave_group');
 });
 
 Route::get('app/deposit/confirm/{hash}', 'Gateway\PaymentController@appDepositConfirm')->name('deposit.app.confirm');

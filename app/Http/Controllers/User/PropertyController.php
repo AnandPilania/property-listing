@@ -15,10 +15,17 @@ use App\Models\PropertyImage;
 use App\Rules\FileTypeValidate;
 use App\Http\Controllers\Controller;
 use App\Models\Location;
+use App\Models\User;
 use App\Models\Wishlist;
+use Musonza\Chat\ConfigurationManager;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Chat;
 
-class PropertyController extends Controller {
-    public function index() {
+class PropertyController extends Controller
+{
+    public function index()
+    {
         $pageTitle = "Add new property";
         $cities = City::orderBy('name', 'asc')->where('status', 1)->select('id', 'name')->with('location')->get();
         $propertyTypes = PropertyType::where('status', 1)->select('name', 'id')->get();
@@ -26,14 +33,16 @@ class PropertyController extends Controller {
         return view($this->activeTemplate . 'property.create', compact('pageTitle', 'cities', 'propertyTypes'));
     }
 
-    public function listProperty() {
+    public function listProperty()
+    {
         $pageTitle = "Properties";
         $properties = Property::where('user_id', auth()->user()->id)->latest()->with('location', 'city', 'propertyInfo', 'propertyImage')->paginate(getPaginate(20));
 
         return view($this->activeTemplate . 'property.list', compact('properties', 'pageTitle'));
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $request->validate([
             'title' => 'required|max:255',
             'property_type' => 'required|exists:property_types,id',
@@ -54,12 +63,12 @@ class PropertyController extends Controller {
 
         $propertyCount = Property::where('user_id', auth()->user()->id)->whereMonth('created_at', now()->month)->count();
 
-        if($plan){
-            if( $propertyCount >= $plan->listing_limit && $subscribe->expire_date < now()){
+        if ($plan) {
+            if ($propertyCount >= $plan->listing_limit && $subscribe->expire_date < now()) {
                 $notify[] = ['error', 'Opps! Your limit is over. Please subscribe to a plan.'];
                 return back()->withNotify($notify);
             }
-        }else{
+        } else {
             $notify[] = ['error', 'Opps! Your limit is over. Please subscribe to a plan.'];
             return back()->withNotify($notify);
         }
@@ -94,17 +103,17 @@ class PropertyController extends Controller {
         $propertyInfo->longitude = $request->longitude;
         $propertyInfo->description = $purifier->purify($request->description);
 
-        if($request->aminities){
+        if ($request->aminities) {
             $propertyInfo->aminity = json_encode($request->aminities);
         }
 
-        if($request->hasFile('floor_plan')){
+        if ($request->hasFile('floor_plan')) {
             $propertyInfo->floor_plan = fileUploader($request->floor_plan, getFilePath('property'));
         }
 
         $propertyInfo->save();
 
-       if($request->images){
+        if ($request->images) {
             foreach ($request->images as $image) {
                 $propertyImage = new PropertyImage();
                 $propertyImage->property_id = $property->id;
@@ -121,10 +130,10 @@ class PropertyController extends Controller {
 
         $notify[] = ['success', 'Property has been created'];
         return back()->withNotify($notify);
-
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
 
         $pageTitle = 'Edit Property';
         $cities = City::orderBy('name', 'asc')->where('status', 1)->select('id', 'name')->with('location')->get();
@@ -134,10 +143,10 @@ class PropertyController extends Controller {
         $propertyImage = PropertyImage::where('property_id', $id)->get();
 
         return view($this->activeTemplate . 'property.edit', compact('property', 'propertyInfo', 'propertyImage', 'cities', 'propertyTypes', 'pageTitle'));
-
     }
 
-    public function imageRemove(Request $request) {
+    public function imageRemove(Request $request)
+    {
         $request->validate([
             'id' => 'required'
         ]);
@@ -148,11 +157,11 @@ class PropertyController extends Controller {
         $image->delete();
         $notify[] = ['success', 'Image has been deleted'];
         return back()->withNotify($notify);
-
     }
 
 
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'title' => 'required|max:255',
             'property_type' => 'required|exists:property_types,id',
@@ -168,7 +177,7 @@ class PropertyController extends Controller {
 
         $userId =  auth()->user()->id;
         $property = Property::findOrFail($id);
-        if($property->user_id != auth()->user()->id){
+        if ($property->user_id != auth()->user()->id) {
             $notify[] = ['error', 'You are not allowed to update this property.'];
             return back()->withNotify($notify);
         }
@@ -194,7 +203,6 @@ class PropertyController extends Controller {
                     return back()->withNotify($notify);
                 }
                 $propertyImage->save();
-
             }
         }
 
@@ -212,10 +220,10 @@ class PropertyController extends Controller {
         $propertyInfo->latitude = $request->latitude;
         $propertyInfo->longitude = $request->longitude;
         $propertyInfo->description = $purifier->purify($request->description);
-        if($request->aminities){
+        if ($request->aminities) {
             $propertyInfo->aminity = json_encode($request->aminities);
         }
-        if($request->hasFile('floor_plan')){
+        if ($request->hasFile('floor_plan')) {
             $old = $propertyInfo->floor_plan;
             $propertyInfo->floor_plan = fileUploader($request->floor_plan, getFilePath('property'), null, $old);
         }
@@ -224,12 +232,11 @@ class PropertyController extends Controller {
 
         $notify[] = ['success', 'Property has been Updated'];
         return back()->withNotify($notify);
-
-
     }
 
 
-    public function addWishlist($id) {
+    public function addWishlist($id)
+    {
 
         $userid = auth()->user()->id;
         $check = Wishlist::where('user_id', $userid)->where('property_id', $id)->first();
@@ -242,14 +249,38 @@ class PropertyController extends Controller {
             if ($check) {
                 $notify[] = ['error', 'Property  already has on your wishlist'];
                 return back()->withNotify($notify);
-
             } else {
                 $data->save();
+
+
+                //send notification to all user conversations
+
+                //lets get all coversations where the user is a participant
+                $q = "SELECT * FROM " . ConfigurationManager::PARTICIPATION_TABLE . " WHERE messageable_id = ?";
+                $conversations = DB::select($q, [Auth::id()]);
+
+                //get the user information
+                $part = User::where('id', Auth::id())->first();
+
+                //get the property information
+                $prop = Property::where('id', $id)->first();
+                $prop_url = route('property.details', [slug($prop->title), $prop->id]);
+
+                //construct the message
+                $message_str = "@" . $part->username . " Liked the property : <u><a href='" . $prop_url . "' target='_blank'>" . $prop->title . "</a></u>";
+
+                //send the message to each of the user's conversations
+                foreach ($conversations as $conversation) {
+                    $conversation = Chat::conversations()->getById($conversation->conversation_id);
+                    $message = Chat::message($message_str)
+                        ->type('text')
+                        ->from($part)
+                        ->to($conversation)
+                        ->send();
+                }
                 $notify[] = ['success', 'Property Add to wishlist'];
                 return back()->withNotify($notify);
-
             }
-
         } else {
             $notify[] = ['warning', 'At first login your account'];
             return back()->withNotify($notify);
@@ -257,7 +288,8 @@ class PropertyController extends Controller {
     }
 
 
-    public function wishlist() {
+    public function wishlist()
+    {
         $pageTitle = "Favourite Property Wishlist";
 
         $wishlist = Wishlist::where('user_id', auth()->user()->id)->get();
@@ -268,7 +300,4 @@ class PropertyController extends Controller {
         }
         return view($this->activeTemplate . 'wishlist.list', compact('property', 'pageTitle'));
     }
-
-
-
 }

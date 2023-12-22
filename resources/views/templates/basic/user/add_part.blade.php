@@ -6,19 +6,21 @@
             <div class="dashboard_body">
                 <div class="row">
                     <div class="col-lg-12">
-                        Add Prticipants to <b> {{ $conversation->data['name'] }}</b>
+                        <a href="{{ route('conversation.show', $conversation->id) }}"><i
+                            class="fas fa-angle-left"></i> Back</a>  <br>
+                            Add Prticipants to <b> {{ $conversation->data['name'] }}</b>
                         <hr>
 
-                        <form action="{{ route('conversation.search_users', $conversation->id) }}" method="POST">
-                            @csrf
+                        <form action="{{ route('conversation.search_users', $conversation->id) }}" method="GET">
+                            {{-- @csrf --}}
                             <div class="mb-3 col-sm-12">
                                 <label for="username" class="form-label">Username:</label>
-                                <input type="text" class="form-control" id="username" placeholder="Enter username">
+                                <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
                             </div>
 
                             <!-- Toggle Advanced Search Button -->
                             <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="toggleAdvancedSearch">
+                                <input type="checkbox" class="form-check-input" id="toggleAdvancedSearch" name="toggleAdvancedSearch">
                                 <label class="form-check-label" for="toggleAdvancedSearch">Toggle Advanced
                                     Search</label>
                             </div>
@@ -30,21 +32,21 @@
                                 <div class="row">
                                     <div class="mb-3 col-sm-6">
                                         <label for="gender" class="form-label">Gender:</label>
-                                        <select class="form-select" id="gender">
-                                            <option value="male">Male</option>
-                                            <option value="female">Female</option>
-                                            <option value="nonBinary">Non-binary</option>
-                                            <option value="preferNotToSay">Prefer not to say</option>
+                                        <select class="form-select" id="gender" name="gender">
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Non-binary">Non-binary</option>
+                                            <option value="Prefer not to say">Prefer not to say</option>
                                         </select>
                                     </div>
 
                                     <!-- Pet Ownership -->
                                     <div class="mb-3 col-sm-6">
                                         <label for="petOwnership" class="form-label">Pet Ownership:</label>
-                                        <select class="form-select" id="petOwnership">
-                                            <option value="ownPets">I own pets</option>
-                                            <option value="comfortableWithPets">I am comfortable with pets</option>
-                                            <option value="petFree">I prefer a pet-free environment</option>
+                                        <select class="form-select" id="petOwnership" name="petOwnership">
+                                            <option value="I own pets">I own pets</option>
+                                            <option value="I am comfortable with pets">I am comfortable with pets</option>
+                                            <option value="I prefer a pet-free environment">I prefer a pet-free environment</option>
                                         </select>
                                     </div>
                                 </div>
@@ -53,21 +55,29 @@
                                     <!-- Ethnicity -->
                                     <div class="mb-3 col-sm-6">
                                         <label for="ethnicity" class="form-label">Ethnicity:</label>
-                                        <select class="form-select" id="ethnicity">
-                                            <option value="asian">Asian</option>
-                                            <option value="black">Black/African American</option>
-                                            <option value="hispanic">Hispanic/Latino</option>
-                                            <option value="white">White/Caucasian</option>
-                                            <option value="otherEthnicity">Other</option>
-                                            <option value="preferNotToSayEthnicity">Prefer not to say</option>
+                                        <select class="form-select" id="ethnicity" name="ethnicity">
+                                            <option value="Asian">Asian</option>
+                                            <option value="Black/African American">Black/African American</option>
+                                            <option value="Hispanic/Latino">Hispanic/Latino</option>
+                                            <option value="White/Caucasian">White/Caucasian</option>
+                                            <option value="Other">Other</option>
+                                            <option value="Prefer not to say">Prefer not to say</option>
                                         </select>
                                     </div>
 
                                     <!-- Nationality -->
                                     <div class="mb-3 col-sm-6">
                                         <label for="nationality" class="form-label">Nationality:</label>
-                                        <input type="text" class="form-control" id="nationality"
-                                            placeholder="Enter nationality">
+                                        <div class="single-input_">
+                                            <select name="nationality" class="form-control">
+                                                @foreach ($countries as $key => $country)
+                                                    <option value="{{ $country->country }}"
+                                                        {{ @$user->address->nationality == $country->country ? 'selected' : '' }}>
+                                                        {{ __($country->country) }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -83,35 +93,45 @@
                         <div class="container">
                             <h1 class="mb-4">User Profile Search Results</h1>
 
-                            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-2">
+                            <div class="row">
                                 @isset($results)
                                     @if ($results->isEmpty())
                                         <p>No users found.</p>
                                     @else
                                         @foreach ($results as $user)
                                             <!-- User Card 1 -->
-                                            <div class="col">
+                                            <div class="col-sm-6">
                                                 <div class="card h-100">
-                                                    <img src="profile1.jpg" class="card-img-top" alt="Profile Picture">
+                                                    <img src="{{asset('/assets/images/frontend/profile/'.$user->image)}}" class="card-img-top" alt="Profile Picture">
                                                     <div class="card-body">
                                                         <h5 class="card-title">
-                                                            <b>{{$user->firstname}} {{$user->lastname}}</b>
+                                                            <b>{{ $user->firstname }} {{ $user->lastname }}</b>
                                                         </h5>
                                                         <p>
-                                                            <i>{{'@'.$user->username}}</i>
+                                                            <i>{{ '@' . $user->username }}</i>
                                                             <hr>
-                                                            <b>Nationality</b>: {{$user->address->nationality}}
+                                                            <b>Nationality</b>: {{ $user->address->nationality }}
                                                             <br>
-                                                            <b>Ethnicity</b>: {{$user->address->ethnicity}}
+                                                            <b>Ethnicity</b>: {{ $user->address->ethnicity }}
                                                             <br>
-                                                            <b>Pet Reference</b>: {{$user->address->pet_ownership}}
+                                                            <b>Pet Reference</b>: {{ $user->address->pet_ownership }}
                                                             <br>
-                                                            <b>Bio</b>: {{$user->address->bio}}
+                                                            <b>Gender</b>: {{ $user->address->gender }}
+                                                            <br>
+                                                            <b>Bio</b>: {{ $user->address->bio }}
                                                         </p>
+                                                        <a href="{{route('conversation.invite_users',[$conversation->id, $user->id])}}" class="btn btn-sm btn-primary"> <i class="fa fa-plus"></i> Invite</a>
                                                     </div>
                                                 </div>
                                             </div>
                                         @endforeach
+                                        @if ($results->hasPages())
+                                            <div class="">
+                                                <div class="col-12 py-4">
+                                                    {{ paginateLinks($results) }}
+                                                </div>
+                                            </div>
+                                        @endif
                                     @endif
                                 @endisset
                             </div>

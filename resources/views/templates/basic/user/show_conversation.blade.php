@@ -20,7 +20,9 @@
                                                 <p class="mb-0 fw-bold">{{ $conversation->data['name'] }}</p>
                                                 <div>
                                                     @if (isset($conversation->data['admins']) && in_array(Auth::id(), $conversation->data['admins']))
-                                                        <a href="{{route('conversation.add_part', $conversation->id)}}" class="btn btn-light"><i class="fas fa-users"></i> Add Participants</a>
+                                                        <a href="{{ route('conversation.add_part', $conversation->id) }}"
+                                                            class="btn btn-light"><i class="fas fa-users"></i> Add
+                                                            Participants</a>
                                                     @endif
                                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                                         data-bs-target="#newConversationModal">
@@ -60,7 +62,7 @@
                                                                             data-bs-toggle="tab" data-bs-target="#contact"
                                                                             type="button" role="tab"
                                                                             aria-controls="contact"
-                                                                            aria-selected="false">Actions</button>
+                                                                            aria-selected="false">Invitations</button>
                                                                     </li>
                                                                 </ul>
                                                                 <div class="tab-content" id="myTabContent">
@@ -98,12 +100,64 @@
                                                                                             {{ '@' . $participant->username }}
                                                                                         </i>
                                                                                     </a>
+                                                                                    @if (isset($conversation->data['admins']) && in_array(Auth::id(), $conversation->data['admins']))
+                                                                                        <a href="{{ route('conversation.leave_group', [$conversation->id, $participant->id]) }}"
+                                                                                            onclick="return confirm('Are you sure you wish to remove this Participant??')"
+                                                                                            class="btn btn-sm btn-secondary"
+                                                                                            style="float: right;">Remove</a>
+                                                                                    @endif
                                                                                 </li>
                                                                             @endforeach
                                                                         </ul>
                                                                     </div>
                                                                     <div class="tab-pane fade" id="contact"
-                                                                        role="tabpanel" aria-labelledby="contact-tab">...
+                                                                        role="tabpanel" aria-labelledby="contact-tab">
+                                                                        @if (isset($invitations))
+                                                                            <table class="table">
+                                                                                <thead>
+                                                                                    <th>Invitee</th>
+                                                                                    <th>Inviter</th>
+                                                                                    <th>Date</th>
+                                                                                    <th>Action</th>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    @foreach ($invitations as $invite)
+                                                                                        <tr>
+                                                                                            <td>
+                                                                                                {{ $invite->invitee_u->firstname }}
+                                                                                                {{ $invite->invitee_u->lastname }}
+                                                                                                <br>
+                                                                                                <small><i>{{ '@' . $invite->invitee_u->username }}</i></small>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                {{ $invite->inviter_u->firstname }}
+                                                                                                {{ $invite->inviter_u->lastname }}
+                                                                                                <br>
+                                                                                                <small><i>{{ '@' . $invite->inviter_u->username }}</i></small>
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                {{ diffForHumans($invite->created_at) }}
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                @if (isset($conversation->data['admins']) && in_array(Auth::id(), $conversation->data['admins']))
+                                                                                                    <a href="{{ route('conversation.decline_invite', [$invite->conversation->id, $invite->invitee_u->id]) }}"
+                                                                                                        onclick="return confirm('Are you sure you wish to cancel this Invite?')"
+                                                                                                        class="btn btn-sm btn-secondary">Cancel</a>
+                                                                                                @endif
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    @endforeach
+                                                                                </tbody>
+                                                                            </table>
+
+                                                                            @if ($invitations->hasPages())
+                                                                                <div class="">
+                                                                                    <div class="col-12 py-4">
+                                                                                        {{ paginateLinks($invitations) }}
+                                                                                    </div>
+                                                                                </div>
+                                                                            @endif
+                                                                        @endif
                                                                     </div>
                                                                 </div>
 
@@ -119,44 +173,63 @@
 
                                             </div>
                                             <div class="card-body">
-
-                                                @foreach ($conversation->messages as $message)
-                                                    @if ($message->sender->id == Auth::id())
-                                                        <div class="d-flex flex-row justify-content-end mb-4">
-                                                            <div class="p-3 me-3 border"
-                                                                style="border-radius: 15px; background-color: #fbfbfb;">
-                                                                <p class="small mb-0">
-                                                                    <b>{{ $message->sender->firstname }}
-                                                                        {{ $message->sender->lastname }}</b> -
-                                                                    <i>{{ '@' . $message->sender->username }}</i>
-                                                                    <br>
-                                                                <p>
-                                                                    {{ $message->body }}
-                                                                </p>
-                                                                </p>
+                                                <div style="height: 400px; overflow-y:auto;">
+                                                    @foreach ($conversation->messages()->oldest()->take(500)->get() as $message)
+                                                        @if (isset($message->participation_id))
+                                                            @if ($message->sender->id == Auth::id())
+                                                                <div class="d-flex flex-row justify-content-end mb-4">
+                                                                    <div class="p-3 me-3 border"
+                                                                        style="border-radius: 15px; background-color: #fbfbfb;">
+                                                                        <p class="small mb-0">
+                                                                            <b>{{ $message->sender->firstname }}
+                                                                                {{ $message->sender->lastname }}</b> -
+                                                                            <i>{{ '@' . $message->sender->username }}</i>
+                                                                            <br>
+                                                                        <p>
+                                                                            {!! $message->body !!}
+                                                                        </p>
+                                                                        </p>
+                                                                    </div>
+                                                                    <img src="{{ asset('/assets/images/frontend/profile/' . $message->sender->image) }}"
+                                                                        alt="avatar"
+                                                                        style="width: 45px; height: 100%; border-radius:50%;">
+                                                                </div>
+                                                            @else
+                                                                <div class="d-flex flex-row justify-content-start mb-4">
+                                                                    <img src="{{ asset('/assets/images/frontend/profile/' . $message->sender->image) }}""
+                                                                        alt="avatar"
+                                                                        style="width: 45px; height: 100%; border-radius:50%;">
+                                                                    <div class="p-3 ms-3"
+                                                                        style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                                                                        <p class="small mb-0">
+                                                                            <b>{{ $message->sender->firstname }}
+                                                                                {{ $message->sender->lastname }}</b> -
+                                                                            <i>{{ '@' . $message->sender->username }}</i>
+                                                                            <br>
+                                                                        <p>
+                                                                            {!! $message->body !!}
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            @endif
+                                                        @else
+                                                            <div class="d-flex flex-row justify-content-start mb-4">
+                                                                <img src="" alt="avatar"
+                                                                    style="width: 45px; height: 100%; border-radius:50%;">
+                                                                <div class="p-3 ms-3"
+                                                                    style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                                                                    <p class="small mb-0">
+                                                                        <i> The sender of this message is no longer in this
+                                                                            chat</i>
+                                                                        <br>
+                                                                    <p>
+                                                                        {!! $message->body !!}
+                                                                    </p>
+                                                                </div>
                                                             </div>
-                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
-                                                                alt="avatar 1" style="width: 45px; height: 100%;">
-                                                        </div>
-                                                    @else
-                                                        <div class="d-flex flex-row justify-content-start mb-4">
-                                                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                                                                alt="avatar 1" style="width: 45px; height: 100%;">
-                                                            <div class="p-3 ms-3"
-                                                                style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
-                                                                <p class="small mb-0">
-                                                                    <b>{{ $message->sender->firstname }}
-                                                                        {{ $message->sender->lastname }}</b> -
-                                                                    <i>{{ '@' . $message->sender->username }}</i>
-                                                                    <br>
-                                                                <p>
-                                                                    {{ $message->body }}
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                @endforeach
-                                                {{-- <div class="d-flex flex-row justify-content-start mb-4">
+                                                        @endif
+                                                    @endforeach
+                                                    {{-- <div class="d-flex flex-row justify-content-start mb-4">
                                                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
                                                         alt="avatar 1" style="width: 45px; height: 100%;">
                                                     <div class="ms-3" style="border-radius: 15px;">
@@ -178,7 +251,7 @@
                                                         <p class="small mb-0">...</p>
                                                     </div>
                                                 </div> --}}
-
+                                                </div>
                                                 <form action="{{ route('conversation.send_message', $conversation->id) }}"
                                                     method="post" enctype="multipart/form-data">
                                                     @csrf
@@ -190,23 +263,21 @@
 
                                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                                         {{-- <div>
-                                                            <div class="input-group">
-                                                                <input type="file" name="attachment" id="attachment"
-                                                                    class="form-control">
-                                                                <label class="input-group-text" for="attachment">
-                                                                    <i class="fas fa-paperclip"></i>
-                                                                    <!-- Font Awesome paperclip icon for attachment -->
-                                                                </label>
-                                                            </div>
-                                                        </div> --}}
+                                                    <div class="input-group">
+                                                        <input type="file" name="attachment" id="attachment"
+                                                            class="form-control">
+                                                        <label class="input-group-text" for="attachment">
+                                                            <i class="fas fa-paperclip"></i>
+                                                            <!-- Font Awesome paperclip icon for attachment -->
+                                                        </label>
+                                                    </div>
+                                                </div> --}}
 
                                                         <button type="submit" class="btn btn-primary">
                                                             <i class="fas fa-paper-plane"></i> Send
                                                         </button>
                                                     </div>
                                                 </form>
-
-
                                             </div>
                                         </div>
 
