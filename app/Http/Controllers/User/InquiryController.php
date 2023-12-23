@@ -44,11 +44,11 @@ class InquiryController extends Controller
         $user_subscription = PlanSubscribe::where('user_id', $user->id)->orderBy('created_at', 'desc')->first();
         if ($user_subscription) {
             if ($user_subscription->expire_date < now() || $user_subscription->inquiries_left < 1) {
-                $notify[] = ['error', 'Opps! You can not send inquiries, please subscribe to a plan.'];
+                $notify[] = ['error', 'Opps! You can not send inquiries, You are over your limit. Please subscribe to a plan.'];
                 return back()->withNotify($notify);
             }
         } else {
-            $notify[] = ['error', 'Opps! You can not send inquiries, please subscribe to a plan.'];
+            $notify[] = ['error', 'Opps! You can not send inquiries,, You are over your limit. Please subscribe to a plan.'];
             return back()->withNotify($notify);
         }
 
