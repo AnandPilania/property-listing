@@ -83,7 +83,7 @@
                 <li>
                     <a href="{{ route('user.profile.setting') }}"
                         class='{{ Route::is('user.profile.setting') ? 'active' : '' }}'>
-                        <i class="fa fa-user"></i>@lang('Profile')
+                        <i class="fa fa-user"></i>@lang('Profile')/KYC
                     </a>
                 </li>
 

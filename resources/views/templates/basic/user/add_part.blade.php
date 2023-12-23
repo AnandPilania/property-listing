@@ -110,15 +110,15 @@
                                                         <p>
                                                             <i>{{ '@' . $user->username }}</i>
                                                             <hr>
-                                                            <b>Nationality</b>: {{ $user->address->nationality }}
+                                                            {{-- <b>Nationality</b>: {{ ($user->address->nationality) ? $user->address->nationality : 'N/A' }} --}}
                                                             <br>
-                                                            <b>Ethnicity</b>: {{ $user->address->ethnicity }}
+                                                            <b>Ethnicity</b>: {{ ($user->address->ethnicity) ? $user->address->ethnicity : 'N/A' }}
                                                             <br>
-                                                            <b>Pet Reference</b>: {{ $user->address->pet_ownership }}
+                                                            <b>Pet Reference</b>: {{ ($user->address->pet_ownership) ? $user->address->pet_ownership : 'N/A' }}
                                                             <br>
-                                                            <b>Gender</b>: {{ $user->address->gender }}
+                                                            <b>Gender</b>: {{ ($user->address->gender) ? $user->address->gender : 'N/A' }}
                                                             <br>
-                                                            <b>Bio</b>: {{ $user->address->bio }}
+                                                            <b>Bio</b>: {{ ($user->address->bio) ? $user->address->bio : '' }}
                                                         </p>
                                                         <a href="{{route('conversation.invite_users',[$conversation->id, $user->id])}}" class="btn btn-sm btn-primary"> <i class="fa fa-plus"></i> Invite</a>
                                                     </div>

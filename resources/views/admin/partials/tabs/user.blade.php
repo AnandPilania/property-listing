@@ -30,6 +30,14 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link {{ Request::routeIs('admin.users.document.kyc') ? 'active' : '' }}"
+                    href="{{route('admin.users.document.kyc')}}">@lang('Documnet KYC')
+                    @if($mobileUnverifiedUsersCount)
+                    <span class="badge rounded-pill bg--white text-muted">{{$mobileUnverifiedUsersCount}}</span>
+                    @endif
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link {{ Request::routeIs('admin.users.with.balance') ? 'active' : '' }}"
                     href="{{route('admin.users.with.balance')}}">@lang('With Balance')
                 </a>

@@ -21,20 +21,20 @@ class PaymentController extends Controller
     public function payment($id)
     {
 
-        $plansubscribe=  PlanSubscribe::where('user_id', @auth()->user()->id)->with('getUserPlanSubscribe')->orderBy('id','desc')->first();
+        $plansubscribe =  PlanSubscribe::where('user_id', @auth()->user()->id)->with('getUserPlanSubscribe')->orderBy('id', 'desc')->first();
 
-            if($plansubscribe){
-                $plan = Plan::findOrFail($id);
-                if($plansubscribe->amount > $plan->price){
+        if ($plansubscribe) {
+            $plan = Plan::findOrFail($id);
+            if ($plansubscribe->amount > $plan->price) {
 
-                    $notify[] = ['error', 'You Can not subscribe to this plan'];
-                    return back()->withNotify($notify);
-                }
-                if($plansubscribe->plan_id==$id){
-                    $notify[] = ['error', 'Already Subscribed to this Plan'];
-                    return back()->withNotify($notify);
-                }
+                $notify[] = ['error', 'You Can not subscribe to this plan'];
+                return back()->withNotify($notify);
             }
+            if ($plansubscribe->plan_id == $id) {
+                $notify[] = ['error', 'Already Subscribed to this Plan'];
+                return back()->withNotify($notify);
+            }
+        }
 
 
         $gatewayCurrency = GatewayCurrency::whereHas('method', function ($gate) {
@@ -44,26 +44,27 @@ class PaymentController extends Controller
 
         $plan = Plan::find($id);
 
-        return view($this->activeTemplate . 'user.payment.payment', compact('gatewayCurrency', 'pageTitle','plan'));
+        return view($this->activeTemplate . 'user.payment.payment', compact('gatewayCurrency', 'pageTitle', 'plan'));
     }
 
     // featured plan
-    public function FeaturedPlanpayment($id){
+    public function FeaturedPlanpayment($id)
+    {
 
         $featuredPlan = FeaturedPlan::find($id);
-        $featuredPlanSubscribe = FeaturedSubscription::where('user_id', @auth()->user()->id)->with('FeaturedPlanSubscribe')->orderBy('created_at','desc')->first();
-        if(@$featuredPlanSubscribe){
+        $featuredPlanSubscribe = FeaturedSubscription::where('user_id', @auth()->user()->id)->with('FeaturedPlanSubscribe')->orderBy('created_at', 'desc')->first();
+        if (@$featuredPlanSubscribe) {
             $featuredPlan = FeaturedPlan::findOrFail($id);
 
-                if(@$featuredPlanSubscribe->amount > @$featuredPlan->price){
+            if (@$featuredPlanSubscribe->amount > @$featuredPlan->price) {
 
-                    $notify[] = ['error', 'You Can not subscribe to this plan'];
-                    return back()->withNotify($notify);
-                }
-                if(@$featuredPlanSubscribe->plan_id==$id){
-                    $notify[] = ['error', 'Already Subscribed to this Plan'];
-                    return back()->withNotify($notify);
-                }
+                $notify[] = ['error', 'You Can not subscribe to this plan'];
+                return back()->withNotify($notify);
+            }
+            if (@$featuredPlanSubscribe->plan_id == $id) {
+                $notify[] = ['error', 'Already Subscribed to this Plan'];
+                return back()->withNotify($notify);
+            }
         }
 
         $gatewayCurrency = GatewayCurrency::whereHas('method', function ($gate) {
@@ -73,8 +74,7 @@ class PaymentController extends Controller
 
         $featuredPlan = FeaturedPlan::find($id);
         $property_id = request()->property_id;
-        return view($this->activeTemplate . 'user.payment.featuredplan_payment', compact('property_id','gatewayCurrency', 'pageTitle','featuredPlan'));
-
+        return view($this->activeTemplate . 'user.payment.featuredplan_payment', compact('property_id', 'gatewayCurrency', 'pageTitle', 'featuredPlan'));
     }
 
     public function deposit()
@@ -127,7 +127,7 @@ class PaymentController extends Controller
         $data->amount = $request->amount;
         $data->plan_id = $plan_id;
         $data->property_id = $property_id;
-        $data->is_plan = $is_plan ;
+        $data->is_plan = $is_plan;
         $data->charge = $charge;
         $data->rate = $gate->rate;
         $data->final_amo = $final_amo;
@@ -161,7 +161,7 @@ class PaymentController extends Controller
     public function depositConfirm()
     {
         $track = session()->get('Track');
-        $deposit = Deposit::where('trx', $track)->where('status',0)->orderBy('id', 'DESC')->with('gateway')->firstOrFail();
+        $deposit = Deposit::where('trx', $track)->where('status', 0)->orderBy('id', 'DESC')->with('gateway')->firstOrFail();
 
         if ($deposit->method_code >= 1000) {
             return to_route('user.deposit.manual.confirm');
@@ -184,7 +184,7 @@ class PaymentController extends Controller
         }
 
         // for Stripe V3
-        if(@$data->session){
+        if (@$data->session) {
             $deposit->btc_wallet = $data->session->id;
             $deposit->save();
         }
@@ -194,7 +194,7 @@ class PaymentController extends Controller
     }
 
 
-    public static function userDataUpdate($deposit,$isManual = null)
+    public static function userDataUpdate($deposit, $isManual = null)
     {
         if ($deposit->status == 0 || $deposit->status == 2) {
             $deposit->status = 1;
@@ -217,20 +217,21 @@ class PaymentController extends Controller
             $transaction->remark = 'deposit';
             $transaction->save();
 
-            if($deposit->is_plan == 0){
+            if ($deposit->is_plan == 0) {
                 $plan = Plan::findOrFail($deposit->plan_id);
 
-                $planSubscribe=new PlanSubscribe();
-                $planSubscribe->user_id= $user->id;
-                $planSubscribe->plan_id=$plan->id;
-                $planSubscribe->amount= $plan->price;
-                $planSubscribe->expire_date= now()->addDays($plan->validity);
+                $planSubscribe = new PlanSubscribe();
+                $planSubscribe->user_id = $user->id;
+                $planSubscribe->plan_id = $plan->id;
+                $planSubscribe->amount = $plan->listing_limit;
+                $planSubscribe->inquiries_left = $plan->inquiries_limit;
+                $planSubscribe->listings_left = $plan->price;
+                $planSubscribe->expire_date = now()->addDays($plan->validity);
                 $planSubscribe->save();
-
-            }else{
+            } else {
                 $FeaturedPlan = FeaturedPlan::findOrFail($deposit->plan_id);
 
-                $FeaturedPlanSubscribe=new FeaturedSubscription();
+                $FeaturedPlanSubscribe = new FeaturedSubscription();
                 $FeaturedPlanSubscribe->user_id = $user->id;
                 $FeaturedPlanSubscribe->plan_id = $FeaturedPlan->id;
                 $FeaturedPlanSubscribe->property_id = $deposit->property_id;
@@ -239,40 +240,39 @@ class PaymentController extends Controller
                 $FeaturedPlanSubscribe->save();
             }
 
-            if($deposit->is_plan == 0){
+            if ($deposit->is_plan == 0) {
                 $adminNotification              = new AdminNotification();
                 $adminNotification->user_id     = $user->id;
-                $adminNotification->title       = $plan->name.' Plan Subscribe from '.$user->username;
-                $adminNotification->click_url   = urlPath('admin.users.detail',$user->id);
+                $adminNotification->title       = $plan->name . ' Plan Subscribe from ' . $user->username;
+                $adminNotification->click_url   = urlPath('admin.users.detail', $user->id);
                 $adminNotification->save();
 
                 notify($user, 'PLAN SUBSCRIBE', [
-                    'plan_name'=>$plan->name,
+                    'plan_name' => $plan->name,
                     'amount' => showAmount($plan->price),
                     'trx' => $user->trx,
                     'post_balance' => showAmount($user->balance)
                 ]);
-            }else{
+            } else {
                 $adminNotification              = new AdminNotification();
                 $adminNotification->user_id     = $user->id;
-                $adminNotification->title       = $FeaturedPlan->name.' Featured Plan Subscribe from '.$user->username;
-                $adminNotification->click_url   = urlPath('admin.users.detail',$user->id);
+                $adminNotification->title       = $FeaturedPlan->name . ' Featured Plan Subscribe from ' . $user->username;
+                $adminNotification->click_url   = urlPath('admin.users.detail', $user->id);
                 $adminNotification->save();
 
                 notify($user, 'PLAN SUBSCRIBE', [
-                    'plan_name'=>$FeaturedPlan->name,
+                    'plan_name' => $FeaturedPlan->name,
                     'amount' => showAmount($FeaturedPlan->price),
                     'trx' => $user->trx,
                     'post_balance' => showAmount($user->balance)
                 ]);
-
             }
 
 
             if (!$isManual) {
                 $adminNotification = new AdminNotification();
                 $adminNotification->user_id = $user->id;
-                $adminNotification->title = 'Deposit successful via '.$deposit->gatewayCurrency()->name;
+                $adminNotification->title = 'Deposit successful via ' . $deposit->gatewayCurrency()->name;
                 $adminNotification->click_url = urlPath('admin.deposit.successful');
                 $adminNotification->save();
             }
@@ -287,8 +287,6 @@ class PaymentController extends Controller
                 'trx' => $deposit->trx,
                 'post_balance' => showAmount($user->balance)
             ]);
-
-
         }
     }
 
@@ -304,7 +302,7 @@ class PaymentController extends Controller
             $pageTitle = 'Deposit Confirm';
             $method = $data->gatewayCurrency();
             $gateway = $method->method;
-            return view($this->activeTemplate . 'user.payment.manual', compact('data', 'pageTitle', 'method','gateway'));
+            return view($this->activeTemplate . 'user.payment.manual', compact('data', 'pageTitle', 'method', 'gateway'));
         }
         abort(404);
     }
@@ -333,8 +331,8 @@ class PaymentController extends Controller
 
         $adminNotification = new AdminNotification();
         $adminNotification->user_id = $data->user->id;
-        $adminNotification->title = 'Deposit request from '.$data->user->username;
-        $adminNotification->click_url = urlPath('admin.deposit.details',$data->id);
+        $adminNotification->title = 'Deposit request from ' . $data->user->username;
+        $adminNotification->click_url = urlPath('admin.deposit.details', $data->id);
         $adminNotification->save();
 
         notify($data->user, 'DEPOSIT_REQUEST', [
@@ -350,6 +348,4 @@ class PaymentController extends Controller
         $notify[] = ['success', 'You have deposit request has been taken'];
         return to_route('user.deposit.history')->withNotify($notify);
     }
-
-
 }

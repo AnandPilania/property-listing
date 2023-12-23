@@ -86,6 +86,11 @@ class User extends Authenticatable
         return $this->where('sv', 0);
     }
 
+    public function scopeUserDocumentKYC()
+    {
+        return $this->where('doc_kyc_document_type', '!=', null)->where('doc_kyc_status', 'pending');
+    }
+
     public function scopeEmailVerified()
     {
         return $this->where('ev', 1);

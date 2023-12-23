@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -10,61 +11,78 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
-class ManageUsersController extends Controller {
+class ManageUsersController extends Controller
+{
 
-    public function allUsers() {
+    public function allUsers()
+    {
         $pageTitle = 'All Users';
         $users = $this->userData();
         return view('admin.users.list', compact('pageTitle', 'users'));
     }
 
-    public function activeUsers() {
+    public function activeUsers()
+    {
         $pageTitle = 'Active Users';
         $users = $this->userData('active');
         return view('admin.users.list', compact('pageTitle', 'users'));
     }
 
-    public function bannedUsers() {
+    public function bannedUsers()
+    {
         $pageTitle = 'Banned Users';
         $users = $this->userData('banned');
         return view('admin.users.list', compact('pageTitle', 'users'));
     }
 
-    public function emailUnverifiedUsers() {
+    public function emailUnverifiedUsers()
+    {
         $pageTitle = 'Email Unverified Users';
         $users = $this->userData('emailUnverified');
         return view('admin.users.list', compact('pageTitle', 'users'));
     }
 
-    public function emailVerifiedUsers() {
+    public function emailVerifiedUsers()
+    {
         $pageTitle = 'Email Verified Users';
         $users = $this->userData('emailVerified');
         return view('admin.users.list', compact('pageTitle', 'users'));
     }
 
 
-    public function mobileUnverifiedUsers() {
+    public function mobileUnverifiedUsers()
+    {
         $pageTitle = 'Mobile Unverified Users';
         $users = $this->userData('mobileUnverified');
         return view('admin.users.list', compact('pageTitle', 'users'));
     }
 
+    public function userDocumentKYC()
+    {
+        $pageTitle = 'User Document KYC List';
+        $users = $this->userData('userDocumentKYC');
+        return view('admin.users.list', compact('pageTitle', 'users'));
+    }
 
-    public function mobileVerifiedUsers() {
+
+    public function mobileVerifiedUsers()
+    {
         $pageTitle = 'Mobile Verified Users';
         $users = $this->userData('mobileVerified');
         return view('admin.users.list', compact('pageTitle', 'users'));
     }
 
 
-    public function usersWithBalance() {
+    public function usersWithBalance()
+    {
         $pageTitle = 'Users with Balance';
         $users = $this->userData('withBalance');
         return view('admin.users.list', compact('pageTitle', 'users'));
     }
 
 
-    protected function userData($scope = null) {
+    protected function userData($scope = null)
+    {
         if ($scope) {
             $users = User::$scope();
         } else {
@@ -84,7 +102,8 @@ class ManageUsersController extends Controller {
     }
 
 
-    public function detail($id) {
+    public function detail($id)
+    {
         $user = User::findOrFail($id);
         $pageTitle = 'User Details / @' . $user->username;
 
@@ -94,7 +113,8 @@ class ManageUsersController extends Controller {
         return view('admin.users.detail', compact('pageTitle', 'user', 'totalDeposit', 'totalTransaction', 'countries'));
     }
 
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         $user = User::findOrFail($id);
         $countryData = json_decode(file_get_contents(resource_path('views/partials/country.json')));
         $countryArray = (array) $countryData;
@@ -132,7 +152,8 @@ class ManageUsersController extends Controller {
         return back()->withNotify($notify);
     }
 
-    public function addSubBalance(Request $request, $id) {
+    public function addSubBalance(Request $request, $id)
+    {
         $request->validate([
             'amount' => 'required|numeric|gt:0',
             'act' => 'required|in:add,sub',
@@ -155,7 +176,6 @@ class ManageUsersController extends Controller {
             $notifyTemplate = 'BAL_ADD';
 
             $notify[] = ['success', $general->cur_sym . $amount . ' has been added successfully'];
-
         } else {
             if ($amount > $user->balance) {
                 $notify[] = ['error', $user->username . ' doesn\'t have sufficient balance.'];
@@ -191,12 +211,47 @@ class ManageUsersController extends Controller {
         return back()->withNotify($notify);
     }
 
-    public function login($id) {
+    public function modifyKYC(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required',
+            'reason' => 'nullable|string|max:1024',
+        ]);
+
+        $user = User::findOrFail($id);
+
+        $user->doc_kyc_status = $request->status;
+        $user->doc_kyc_rejection_reason = $request->reason;
+
+        $user->save();
+
+        $subject = 'KYC Status Updated';
+
+        $message = "Our Compliance Team has reviewed your KYC documentation, and has updated the status of your
+        KYC as '" . ucfirst($request->status) . "' <br> Proceed to loginto your account to reviw these changes.";
+
+        notify(
+            $user,
+            'DEFAULT',
+            [
+                'subject' => $subject,
+                'message' => $message,
+            ],
+            //  ['email']
+        );
+
+        $notify[] = ['success', 'User KYC Document Status Updated successfully'];
+        return back()->withNotify($notify);
+    }
+
+    public function login($id)
+    {
         Auth::loginUsingId($id);
         return to_route('user.home');
     }
 
-    public function status(Request $request, $id) {
+    public function status(Request $request, $id)
+    {
         $user = User::findOrFail($id);
         if ($user->status == 1) {
             $request->validate([
@@ -212,11 +267,11 @@ class ManageUsersController extends Controller {
         }
         $user->save();
         return back()->withNotify($notify);
-
     }
 
 
-    public function showNotificationSingleForm($id) {
+    public function showNotificationSingleForm($id)
+    {
         $user = User::findOrFail($id);
         $general = gs();
         if (!$general->en && !$general->sn) {
@@ -227,7 +282,8 @@ class ManageUsersController extends Controller {
         return view('admin.users.notification_single', compact('pageTitle', 'user'));
     }
 
-    public function sendNotificationSingle(Request $request, $id) {
+    public function sendNotificationSingle(Request $request, $id)
+    {
         $request->validate([
             'message' => 'required|string',
             'subject' => 'required|string',
@@ -242,7 +298,8 @@ class ManageUsersController extends Controller {
         return back()->withNotify($notify);
     }
 
-    public function showNotificationAllForm() {
+    public function showNotificationAllForm()
+    {
         $general = gs();
         if (!$general->en && !$general->sn) {
             $notify[] = ['warning', 'Notification options are disabled currently'];
@@ -253,7 +310,8 @@ class ManageUsersController extends Controller {
         return view('admin.users.notification_all', compact('pageTitle', 'users'));
     }
 
-    public function sendNotificationAll(Request $request) {
+    public function sendNotificationAll(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
             'message' => 'required',
@@ -277,11 +335,11 @@ class ManageUsersController extends Controller {
         ]);
     }
 
-    public function notificationLog($id) {
+    public function notificationLog($id)
+    {
         $user = User::findOrFail($id);
         $pageTitle = 'Notifications Sent to ' . $user->username;
         $logs = NotificationLog::where('user_id', $id)->with('user')->orderBy('id', 'desc')->paginate(getPaginate());
         return view('admin.reports.notification_history', compact('pageTitle', 'logs', 'user'));
     }
-
 }
