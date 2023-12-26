@@ -87,7 +87,7 @@
                                     <p>@lang('Property Purpose')</p>
                                     <select name="type" class="all_select">
                                         <option value="1">@lang('For Rent')</option>
-                                        <option value="2">@lang('For Sale')</option>
+                                        {{-- <option value="2">@lang('For Sale')</option> --}}
                                     </select>
                                 </div>
                             </div>

@@ -95,8 +95,8 @@
                                     <select name="type" class="all_select">
                                         <option value="1" @if($property->type == 1) selected @endif>@lang('For Sale')
                                         </option>
-                                        <option value="2" @if($property->type == 2) selected @endif>@lang('For Rent')
-                                        </option>
+                                        {{-- <option value="2" @if($property->type == 2) selected @endif>@lang('For Rent')
+                                        </option> --}}
                                     </select>
                                 </div>
                             </div>

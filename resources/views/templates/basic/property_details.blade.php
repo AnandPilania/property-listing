@@ -26,7 +26,7 @@
                                 </div>
                                 <div class="nice_select_wrapper mb-20 style_1">
                                     <select name="type" class="all_select">
-                                        <option value="1">@lang('For Sale')</option>
+                                        {{-- <option value="1">@lang('For Sale')</option> --}}
                                         <option value="2">@lang('For Rent')</option>
                                     </select>
                                 </div>
@@ -72,8 +72,8 @@
 
                                 <div class="advance_search_input mb-20">
                                     <p>@lang('Price Range')({{$general->cur_sym}}<span
-                                            id="minTxt">@lang('10000')</span>-{{$general->cur_sym}}<span
-                                            id="maxTxt">@lang('9000000')</span>)</p>
+                                            id="minTxt">@lang('100')</span>-{{$general->cur_sym}}<span
+                                            id="maxTxt">@lang('9000')</span>)</p>
                                     <div class="range-slider">
                                         <div id="abcd"></div>
                                         <input type="hidden" name="min" id="min">
@@ -114,7 +114,7 @@
 
                     </div>
                     {{-- endinquiry --}}
-                    <div class="widget_box mb-30">
+                    {{-- <div class="widget_box mb-30">
                         <div class="widget_box_header">
                             <h4 class="mb-20">@lang('Contact Information')</h4>
                         </div>
@@ -145,7 +145,7 @@
                                 <p><a href="javascript:void(0)">{{__($contacts->data_values->email_address)}}</a> </p>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
 
                 </div>
@@ -463,8 +463,8 @@
         $("#abcd").slider({
             range: true,
             min: 0,
-            max: 1000000,
-            values: [111400, 900000],
+            max: 100000,
+            values: [100, 9000],
             step: 100,
             slide: function (event, ui) {
                 $("#min").val(ui.values[0]), $("#max").val(ui.values[1]);

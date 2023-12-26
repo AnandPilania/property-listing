@@ -154,6 +154,14 @@
                             </label>
                         </div>
                         <div class="form-group col-md-2 col-sm-6 mb-4">
+                            <label class="fw-bold">@lang('Show Only Subscribed Users In group Search')</label>
+                            <label class="switch m-0">
+                                <input type="checkbox" class="toggle-switch" name="require_sub_for_search_res_disp" {{ $general->require_sub_for_search_res_disp ?
+                                'checked' : null }}>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="form-group col-md-2 col-sm-6 mb-4">
                             <label class="fw-bold">@lang('Terms & Condition ')</label>
                             <label class="switch m-0">
                                 <input type="checkbox" class="toggle-switch" name="agree" {{ $general->agree ?

@@ -15,7 +15,7 @@ class GeneralSettingController extends Controller
     {
         $pageTitle = 'Global Settings';
         $timezones = json_decode(file_get_contents(resource_path('views/admin/partials/timezone.json')));
-        return view('admin.setting.general', compact('pageTitle','timezones'));
+        return view('admin.setting.general', compact('pageTitle', 'timezones'));
     }
 
     public function update(Request $request)
@@ -40,6 +40,7 @@ class GeneralSettingController extends Controller
         $general->en = $request->en ? 1 : 0;
         $general->sv = $request->sv ? 1 : 0;
         $general->sn = $request->sn ? 1 : 0;
+        $general->require_sub_for_search_res_disp = $request->require_sub_for_search_res_disp ? 1 : 0;
         $general->force_ssl = $request->force_ssl ? 1 : 0;
         $general->secure_password = $request->secure_password ? 1 : 0;
         $general->registration = $request->registration ? 1 : 0;
@@ -47,7 +48,7 @@ class GeneralSettingController extends Controller
         $general->save();
 
         $timezoneFile = config_path('timezone.php');
-        $content = '<?php $timezone = '.$request->timezone.' ?>';
+        $content = '<?php $timezone = ' . $request->timezone . ' ?>';
         file_put_contents($timezoneFile, $content);
         $notify[] = ['success', 'General Settings has been updated successfully'];
         return back()->withNotify($notify);
@@ -62,8 +63,8 @@ class GeneralSettingController extends Controller
     public function logoIconUpdate(Request $request)
     {
         $request->validate([
-            'logo' => ['image',new FileTypeValidate(['jpg','jpeg','png'])],
-            'favicon' => ['image',new FileTypeValidate(['png'])],
+            'logo' => ['image', new FileTypeValidate(['jpg', 'jpeg', 'png'])],
+            'favicon' => ['image', new FileTypeValidate(['png'])],
         ]);
         if ($request->hasFile('logo')) {
             try {
@@ -107,25 +108,27 @@ class GeneralSettingController extends Controller
         return back()->withNotify($notify);
     }
 
-    public function cookie(){
+    public function cookie()
+    {
         $pageTitle = 'GDPR Cookie';
-        $cookie = Frontend::where('data_keys','cookie.data')->firstOrFail();
-        return view('admin.setting.cookie',compact('pageTitle','cookie'));
+        $cookie = Frontend::where('data_keys', 'cookie.data')->firstOrFail();
+        return view('admin.setting.cookie', compact('pageTitle', 'cookie'));
     }
 
-    public function cookieSubmit(Request $request){
+    public function cookieSubmit(Request $request)
+    {
         $request->validate([
-            'short_desc'=>'required|string|max:255',
-            'description'=>'required',
+            'short_desc' => 'required|string|max:255',
+            'description' => 'required',
         ]);
-        $cookie = Frontend::where('data_keys','cookie.data')->firstOrFail();
+        $cookie = Frontend::where('data_keys', 'cookie.data')->firstOrFail();
         $cookie->data_values = [
             'short_desc' => $request->short_desc,
             'description' => $request->description,
             'status' => $request->status ? 1 : 0,
         ];
         $cookie->save();
-        $notify[] = ['success','Cookie policy has been updated successfully'];
+        $notify[] = ['success', 'Cookie policy has been updated successfully'];
         return back()->withNotify($notify);
     }
 }

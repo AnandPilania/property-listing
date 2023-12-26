@@ -6,21 +6,23 @@
             <div class="dashboard_body">
                 <div class="row">
                     <div class="col-lg-12">
-                        <a href="{{ route('conversation.show', $conversation->id) }}"><i
-                            class="fas fa-angle-left"></i> Back</a>  <br>
-                            Add Prticipants to <b> {{ $conversation->data['name'] }}</b>
+                        <a href="{{ route('conversation.show', $conversation->id) }}"><i class="fas fa-angle-left"></i>
+                            Back</a> <br>
+                        Add Prticipants to <b> {{ $conversation->data['name'] }}</b>
                         <hr>
 
                         <form action="{{ route('conversation.search_users', $conversation->id) }}" method="GET">
                             {{-- @csrf --}}
                             <div class="mb-3 col-sm-12">
                                 <label for="username" class="form-label">Username:</label>
-                                <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
+                                <input type="text" class="form-control" id="username" name="username"
+                                    placeholder="Enter username">
                             </div>
 
                             <!-- Toggle Advanced Search Button -->
                             <div class="mb-3 form-check">
-                                <input type="checkbox" class="form-check-input" id="toggleAdvancedSearch" name="toggleAdvancedSearch">
+                                <input type="checkbox" class="form-check-input" id="toggleAdvancedSearch"
+                                    name="toggleAdvancedSearch">
                                 <label class="form-check-label" for="toggleAdvancedSearch">Toggle Advanced
                                     Search</label>
                             </div>
@@ -46,7 +48,8 @@
                                         <select class="form-select" id="petOwnership" name="petOwnership">
                                             <option value="I own pets">I own pets</option>
                                             <option value="I am comfortable with pets">I am comfortable with pets</option>
-                                            <option value="I prefer a pet-free environment">I prefer a pet-free environment</option>
+                                            <option value="I prefer a pet-free environment">I prefer a pet-free environment
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -86,6 +89,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary">Search</button>
+                            <button type="submit" class="btn btn-primary">Show All Users</button>
                         </form>
                         <hr>
 
@@ -100,30 +104,73 @@
                                     @else
                                         @foreach ($results as $user)
                                             <!-- User Card 1 -->
-                                            <div class="col-sm-6">
-                                                <div class="card h-100">
-                                                    <img src="{{asset('/assets/images/frontend/profile/'.$user->image)}}" class="card-img-top" alt="Profile Picture">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title">
-                                                            <b>{{ $user->firstname }} {{ $user->lastname }}</b>
-                                                        </h5>
-                                                        <p>
-                                                            <i>{{ '@' . $user->username }}</i>
-                                                            <hr>
-                                                            {{-- <b>Nationality</b>: {{ ($user->address->nationality) ? $user->address->nationality : 'N/A' }} --}}
-                                                            <br>
-                                                            <b>Ethnicity</b>: {{ ($user->address->ethnicity) ? $user->address->ethnicity : 'N/A' }}
-                                                            <br>
-                                                            <b>Pet Reference</b>: {{ ($user->address->pet_ownership) ? $user->address->pet_ownership : 'N/A' }}
-                                                            <br>
-                                                            <b>Gender</b>: {{ ($user->address->gender) ? $user->address->gender : 'N/A' }}
-                                                            <br>
-                                                            <b>Bio</b>: {{ ($user->address->bio) ? $user->address->bio : '' }}
-                                                        </p>
-                                                        <a href="{{route('conversation.invite_users',[$conversation->id, $user->id])}}" class="btn btn-sm btn-primary"> <i class="fa fa-plus"></i> Invite</a>
+                                            @if (gs()->require_sub_for_search_res_disp == 1)
+                                                @if (user_has_active_plan($user->id))
+                                                    <div class="col-sm-6">
+                                                        <div class="card h-100">
+                                                            <img src="{{ asset('/assets/images/frontend/profile/' . $user->image) }}"
+                                                                class="card-img-top" alt="Profile Picture">
+                                                            <div class="card-body">
+                                                                <h5 class="card-title">
+                                                                    <b>{{ $user->firstname }} {{ $user->lastname }}</b>
+                                                                </h5>
+                                                                <p>
+                                                                    <i>{{ '@' . $user->username }}</i>
+                                                                    <hr>
+                                                                    <b>Nationality</b>: {{ ($user->address->nationality) ? $user->address->nationality : 'N/A' }}
+                                                                    <br>
+                                                                    <b>Ethnicity</b>:
+                                                                    {{ $user->address->ethnicity ? $user->address->ethnicity : 'N/A' }}
+                                                                    <br>
+                                                                    <b>Pet Reference</b>:
+                                                                    {{ $user->address->pet_ownership ? $user->address->pet_ownership : 'N/A' }}
+                                                                    <br>
+                                                                    <b>Gender</b>:
+                                                                    {{ $user->address->gender ? $user->address->gender : 'N/A' }}
+                                                                    <br>
+                                                                    <b>Bio</b>:
+                                                                    {{ $user->address->bio ? $user->address->bio : '' }}
+                                                                </p>
+                                                                <a href="{{ route('conversation.invite_users', [$conversation->id, $user->id]) }}"
+                                                                    class="btn btn-sm btn-primary"> <i class="fa fa-plus"></i>
+                                                                    Invite</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            @else
+                                                <div class="col-sm-6">
+                                                    <div class="card h-100">
+                                                        <img src="{{ asset('/assets/images/frontend/profile/' . $user->image) }}"
+                                                            class="card-img-top" alt="Profile Picture">
+                                                        <div class="card-body">
+                                                            <h5 class="card-title">
+                                                                <b>{{ $user->firstname }} {{ $user->lastname }}</b>
+                                                            </h5>
+                                                            <p>
+                                                                <i>{{ '@' . $user->username }}</i>
+                                                                <hr>
+                                                                {{-- <b>Nationality</b>: {{ ($user->address->nationality) ? $user->address->nationality : 'N/A' }} --}}
+                                                                <br>
+                                                                <b>Ethnicity</b>:
+                                                                {{ $user->address->ethnicity ? $user->address->ethnicity : 'N/A' }}
+                                                                <br>
+                                                                <b>Pet Reference</b>:
+                                                                {{ $user->address->pet_ownership ? $user->address->pet_ownership : 'N/A' }}
+                                                                <br>
+                                                                <b>Gender</b>:
+                                                                {{ $user->address->gender ? $user->address->gender : 'N/A' }}
+                                                                <br>
+                                                                <b>Bio</b>:
+                                                                {{ $user->address->bio ? $user->address->bio : '' }}
+                                                            </p>
+                                                            <a href="{{ route('conversation.invite_users', [$conversation->id, $user->id]) }}"
+                                                                class="btn btn-sm btn-primary"> <i class="fa fa-plus"></i>
+                                                                Invite</a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            @endif
                                         @endforeach
                                         @if ($results->hasPages())
                                             <div class="">

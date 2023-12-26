@@ -9,6 +9,7 @@ use App\Lib\Captcha;
 use App\Lib\ClientInfo;
 use App\Lib\CurlRequest;
 use App\Lib\FileManager;
+use App\Models\PlanSubscribe;
 use App\Notify\Notify;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -23,8 +24,8 @@ function verificationCode($length)
 {
     if ($length == 0) return 0;
     $min = pow(10, $length - 1);
-    $max = (int) ($min - 1).'9';
-    return random_int($min,$max);
+    $max = (int) ($min - 1) . '9';
+    return random_int($min, $max);
 }
 
 function getNumber($length = 8)
@@ -430,4 +431,19 @@ function gs()
         Cache::put('GeneralSetting', $general);
     }
     return $general;
+}
+
+function user_has_active_plan($user_id)
+{
+    //check if user has active plan
+    $user_subscription = PlanSubscribe::where('user_id', $user_id)->orderBy('created_at', 'desc')->first();
+    if ($user_subscription) {
+        if ($user_subscription->expire_date < now()) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
