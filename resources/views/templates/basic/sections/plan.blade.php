@@ -26,7 +26,7 @@ $user=App\Models\PlanSubscribe::where('user_id',
           <div class="single_plan__body mb-35">
             <ul>
               <li><i class="fa-solid fa-check"></i>{{__($item->listing_limit)}} @lang('Listings Per Month')</li>
-              <li><i class="fa-solid fa-check"></i>@lang('Unlimited Inquiries')</li>
+              <li><i class="fa-solid fa-check"></i>{{__($item->inquiries_limit)}} @lang('Inquiries Per Month')</li>
               <li><i class="fa-solid fa-check"></i>@lang('Lifetime Support')</li>
             </ul>
           </div>
