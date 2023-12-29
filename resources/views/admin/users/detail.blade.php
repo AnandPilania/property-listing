@@ -125,12 +125,12 @@
                     <div class="card">
                         <div class="card-header">
                             <h5 class="card-title mb-0">
-                                @lang('Information of') {{ $user->fullname }}
+                                @lang('Information of') {{ $user->fullname }} -
 
                                 @if ($user->is_landlord == 1)
-                                    <span class="badge badge--secondary">Landlord</span>
+                                    <span class="">Landlord</span>
                                 @else
-                                    <span class="badge badge--secondary">User</span>
+                                    <span class="">User</span>
                                 @endif
                             </h5>
                         </div>
