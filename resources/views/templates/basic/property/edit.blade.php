@@ -10,6 +10,24 @@
                 <div class="row">
                     <div class="login_wrapper">
                         <div class="row">
+                            <div class="col-lg-6 mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="property_available" {{ $property->property_available==1 ? 'checked':
+                                    ''}} id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        @lang('Is Available?')
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" disabled {{ $property->status==1 ? 'checked':
+                                    ''}}>
+                                    <label class="form-check-label">
+                                        @lang('Is Approved?')
+                                    </label>
+                                </div>
+                            </div>
                             <div class="col-lg-6">
                                 <div class="form-group profile mb-15">
                                     <label for="property_title">@lang('Property Title')</label>
@@ -203,6 +221,15 @@
                                 </div>
                             </div>
                             <div class="col-lg-12">
+                                <div class="form-group profile mb-15">
+                                    <label>@lang('Property Document / Proof Of Ownership')</label>
+                                    <div class="single-input">
+                                        <img src="{{ getImage(getFilePath('property') .'/'.@$propertyInfo->property_docs) }}" width="200" alt="image" class="mb-3">
+                                        <input type="file" name="property_docs" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
                                 <div class="row form-group profile property-img">
                                     <div class="col-12">
                                         <label for="proeerty_salce_price">@lang('Property Image')</label>
@@ -287,15 +314,6 @@
             </div>
         </div>
         <div class="dashboard_box">
-            <div class="col-lg-12 mb-4">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="status" {{ $property->status==1 ? 'checked':
-                    ''}} id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
-                        @lang('Active')
-                    </label>
-                </div>
-            </div>
             <div class="col-lg-12">
                 <div class="register_bottom mb-15">
                     <button type="submit" class="theme_btn style_1 dashborad_btn money-btn"> <span

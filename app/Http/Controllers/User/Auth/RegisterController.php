@@ -80,7 +80,8 @@ class RegisterController extends Controller
             'mobile_code' => 'required|in:' . $mobileCodes,
             'country_code' => 'required|in:' . $countryCodes,
             'country' => 'required|in:' . $countries,
-            'agree' => $agree
+            'agree' => $agree,
+            'is_landlord' => 'required'
         ]);
         return $validate;
     }
@@ -142,6 +143,7 @@ class RegisterController extends Controller
         $user->ref_by = $referUser ? $referUser->id : 0;
         $user->country_code = $data['country_code'];
         $user->mobile = $data['mobile_code'] . $data['mobile'];
+        $user->is_landlord = $data['is_landlord'];
         $user->address = [];
         $user->address = [
             'address' => '',

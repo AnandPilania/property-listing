@@ -24,7 +24,16 @@
                                     </div>
                                 </div>
                             @endif
-
+                            <div class="form-group profile mb-15">
+                                <label for="first_name">@lang('Account Type')<span class="text-danger">*</span> </label>
+                                <div class="single-input">
+                                    <select name="is_landlord" id="is_landlord" class="form-control" required>
+                                        <option value="">--select account type--</option>
+                                        <option value="0" {{ (old('is_landlord') == '0') ? 'selected' : '' }}>User - looking for property</option>
+                                        <option value="1" {{ (old('is_landlord') == '1') ? 'selected' : '' }}>Landlord - owns property</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group profile mb-15">
                                 <label for="first_name">@lang('Username')<span class="text-danger">*</span> </label>
                                 <div class="single-input">

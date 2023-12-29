@@ -47,6 +47,12 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 ">
+                        @if (Auth::user() && Auth::user()->doc_kyc_status != 'accepted')
+                            <div class="alert alert-danger">
+                                Click <a href="{{ route('user.profile.setting') }}"> <b><u>here</u></b> </a> to complete KYC and unlock
+                                the full potential of this platform
+                            </div>
+                        @endif
                         <div class="dashboard_item subscrib">
                             <h4>@lang('Subscribed Plan')</h4>
                             <hr>
@@ -71,7 +77,7 @@
                                                     <a href="{{ route('user.payment', $plan->id) }}"
                                                         class="theme_btn style_1 mb-10"><span
                                                             class="btn_title">@lang('Buy
-                                                                                                        Now ')<i
+                                                                                                                                                                                                                                Now ')<i
                                                                 class="fa-solid fa-angles-right"></i></span> </a>
                                                 @endif
 

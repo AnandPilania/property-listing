@@ -53,6 +53,7 @@ class PropertyController extends Controller
             'aminities.*' => 'required',
             'type' => 'required|in:1,2',
             'floor_plan' => ['image', new FileTypeValidate(['jpg', 'jpeg', 'png'])],
+            'property_docs' => ['required', 'image', new FileTypeValidate(['jpg', 'jpeg', 'png'])],
             'images.*' => ['required', 'image', new FileTypeValidate(['jpg', 'jpeg', 'png'])],
         ]);
 
@@ -84,7 +85,7 @@ class PropertyController extends Controller
         $property->email = $request->email;
         $property->phone = $request->phone;
         $property->type = $request->type;
-        $property->status = 1;
+        $property->status = 0;
         $property->save();
 
 
@@ -109,6 +110,10 @@ class PropertyController extends Controller
 
         if ($request->hasFile('floor_plan')) {
             $propertyInfo->floor_plan = fileUploader($request->floor_plan, getFilePath('property'));
+        }
+
+        if ($request->hasFile('property_docs')) {
+            $propertyInfo->property_docs = fileUploader($request->property_docs, getFilePath('property'));
         }
 
         $propertyInfo->save();
@@ -172,6 +177,7 @@ class PropertyController extends Controller
             'aminities.*' => 'required',
             'type' => 'required|in:1,2',
             'floor_plan' => ['image', new FileTypeValidate(['jpg', 'jpeg', 'png'])],
+            'property_docs' => ['image', new FileTypeValidate(['jpg', 'jpeg', 'png'])],
             'images.*' => ['required', 'image', new FileTypeValidate(['jpg', 'jpeg', 'png'])],
         ]);
 
@@ -189,7 +195,7 @@ class PropertyController extends Controller
         $property->email = $request->email;
         $property->phone = $request->phone;
         $property->type = $request->type;
-        $property->status = $request->status ? 1 : 0;
+        $property->property_available = $request->property_available ? 1 : 0;
         $property->save();
 
         if ($request->hasFile('images')) {
@@ -226,6 +232,11 @@ class PropertyController extends Controller
         if ($request->hasFile('floor_plan')) {
             $old = $propertyInfo->floor_plan;
             $propertyInfo->floor_plan = fileUploader($request->floor_plan, getFilePath('property'), null, $old);
+        }
+
+        if ($request->hasFile('property_docs')) {
+            $old = $propertyInfo->property_docs;
+            $propertyInfo->property_docs = fileUploader($request->property_docs, getFilePath('property'), null, $old);
         }
 
         $propertyInfo->save();

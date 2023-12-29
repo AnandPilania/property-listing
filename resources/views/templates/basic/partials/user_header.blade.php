@@ -1,7 +1,7 @@
 @php
-$contact = getContent('contact_us.content', true);
-$social_icon = getContent('social_icon.element', false);
-$languages = App\Models\Language::all();
+    $contact = getContent('contact_us.content', true);
+    $social_icon = getContent('social_icon.element', false);
+    $languages = App\Models\Language::all();
 @endphp
 <!--=======-** Header Start **-=======-->
 <header class="header_area header-transparent">
@@ -12,15 +12,15 @@ $languages = App\Models\Language::all();
                     <div class="header_top_left">
                         <ul>
                             <li>
-                                <a href="{{__($contact->data_values->contact_number)}}">
+                                <a href="{{ __($contact->data_values->contact_number) }}">
                                     <i class="fa-solid fa-phone"></i>
-                                    {{__($contact->data_values->contact_number)}}
+                                    {{ __($contact->data_values->contact_number) }}
                                 </a>
                             </li>
                             <li>
-                                <a href="mailto:{{__($contact->data_values->email_address)}}">
+                                <a href="mailto:{{ __($contact->data_values->email_address) }}">
                                     <i class="fa-solid fa-envelope"></i>
-                                    {{__($contact->data_values->email_address)}}
+                                    {{ __($contact->data_values->email_address) }}
                                 </a>
                             </li>
 
@@ -34,9 +34,10 @@ $languages = App\Models\Language::all();
                                 <div class="lang_select_wrapper mr-10">
                                     <select class="language-select">
                                         <option value="default" hidden="">@lang('Language')</option>
-                                        @foreach($languages as $lang)
-                                        <option value="{{ $lang->code }}" @if(Session::get('lang')===$lang->code)
-                                            selected @endif>{{ __($lang->name) }}</option>
+                                        @foreach ($languages as $lang)
+                                            <option value="{{ $lang->code }}"
+                                                @if (Session::get('lang') === $lang->code) selected @endif>{{ __($lang->name) }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -46,10 +47,16 @@ $languages = App\Models\Language::all();
                             </li>
                             <li>
                                 <ul class="list-unstyled">
-                                    @foreach($social_icon as $item)
-                                    <li class="ms-2"><a href="{{ __($item->data_values->url)}}"> <i></i>@php echo
-                                            $item->data_values->social_icon
-                                            @endphp </a></li>
+                                    @foreach ($social_icon as $item)
+                                        <li class="ms-2">
+                                            <a href="{{ __($item->data_values->url) }}">
+                                                <i>
+                                                    @php
+                                                    echo $item->data_values->social_icon;
+                                                    @endphp
+                                                </i>
+                                            </a>
+                                        </li>
                                     @endforeach
 
                                 </ul>
@@ -66,9 +73,9 @@ $languages = App\Models\Language::all();
                 <div class="col-xl-3 col-lg-3">
                     <div class="logo_wrapper">
                         <div class="logo">
-                            <a href="{{route('home')}}">
-                                <img src="{{ getImage(getFilePath('logoIcon').'/logo.png', '?'
-                                .time()) }}" alt="{{config('app.name')}}" alt="Image">
+                            <a href="{{ route('home') }}">
+                                <img src="{{ getImage(getFilePath('logoIcon') . '/logo.png', '?' . time()) }}"
+                                    alt="{{ config('app.name') }}" alt="Image">
                             </a>
                             <div class="mobile-nav"></div>
                         </div>
@@ -80,34 +87,35 @@ $languages = App\Models\Language::all();
                             <nav id="mobile-nav">
                                 <ul class="menu_list_box">
                                     <li><a class="{{ Route::is('user.home') ? 'active' : '' }}"
-                                            href="{{route('user.home')}}">@lang('Dashboard')</a></li>
+                                            href="{{ route('user.home') }}">@lang('Dashboard')</a></li>
                                     @php
-                                    $pages =
-                                    App\Models\Page::where('tempname',$activeTemplate)->where('is_default',0)->get();
+                                        $pages = App\Models\Page::where('tempname', $activeTemplate)
+                                            ->where('is_default', 0)
+                                            ->get();
                                     @endphp
-                                    @foreach($pages as $page)
-                                    @if($page->slug != 'home' && $page->slug != 'blog' && $page->slug != 'contact' &&
-                                    $page->slug != 'listing')
-                                    <li><a href="{{route('pages',[$page->slug])}}"
-                                            class="{{ Route::is('pages',[$page->slug]) ? 'active' : '' }}"
-                                            data-hover="{{__($page->name)}}">{{__($page->name)}}</a></li>
-                                    @endif
+                                    @foreach ($pages as $page)
+                                        @if ($page->slug != 'home' && $page->slug != 'blog' && $page->slug != 'contact' && $page->slug != 'listing')
+                                            <li><a href="{{ route('pages', [$page->slug]) }}"
+                                                    class="{{ Route::is('pages', [$page->slug]) ? 'active' : '' }}"
+                                                    data-hover="{{ __($page->name) }}">{{ __($page->name) }}</a></li>
+                                        @endif
                                     @endforeach
-                                    <li><a href="{{route('properties')}}"
+                                    <li><a href="{{ route('properties') }}"
                                             class="{{ Route::is('properties') ? 'active' : '' }}">@lang('Properties')</a>
                                     </li>
-                                    <li><a href="{{route('blog')}}" class='{{ Route::is('blog') ? 'active' : '' }}'>@lang('Blog')</a></li>
-                                    <li><a href="{{route('contact')}}"
+                                    <li><a href="{{ route('blog') }}"
+                                            class='{{ Route::is('blog') ? 'active' : '' }}'>@lang('Blog')</a></li>
+                                    <li><a href="{{ route('contact') }}"
                                             class="{{ Route::is('contact') ? 'active' : '' }}">@lang('Contact')</a>
                                     </li>
 
 
-                                    @if(Auth::user() && Auth::user()->doc_kyc_status == 'accepted')
-                                    <li>
-                                        <a href="{{route('user.property.index')}}" class="theme_btn"><span
-                                                class="btn_title"><i class="fa-solid fa-house"></i> @lang('Add
-                                                Property')</span></a>
-                                    </li>
+                                    @if (Auth::user() && Auth::user()->doc_kyc_status == 'accepted' && Auth::user() && Auth::user()->is_landlord == 1)
+                                        <li>
+                                            <a href="{{ route('user.property.index') }}" class="theme_btn"><span
+                                                    class="btn_title"><i class="fa-solid fa-house"></i>
+                                                    @lang('Add Property')</span></a>
+                                        </li>
                                     @endif
                                 </ul>
                             </nav>

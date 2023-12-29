@@ -14,11 +14,21 @@
                                     <h5 class="card-header bg--primary">@lang('Property Space')</h5>
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="form-group col-md-2 col-sm-6 mb-4">
-                                                    <label class="fw-bold">@lang('Status')</label>
+                                            <div class="col-lg-6">
+                                                <div class="form-group col-md-6 col-sm-6 mb-4">
+                                                    <label class="fw-bold">@lang('Approval Status')</label>
                                                     <label class="switch m-0">
                                                         <input type="checkbox" class="toggle-switch" name="status" {{ $property->status ?
+                                                        'checked' : null }}>
+                                                        <span class="slider round"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form-group col-md-6 col-sm-6 mb-4">
+                                                    <label class="fw-bold">@lang('Availability Status')</label>
+                                                    <label class="switch m-0">
+                                                        <input type="checkbox" class="toggle-switch" name="property_available" {{ $property->property_available ?
                                                         'checked' : null }}>
                                                         <span class="slider round"></span>
                                                     </label>
@@ -69,7 +79,7 @@
                                                         <label for="type" class="font-weight-bold">@lang('Property Purpose')</label>
                                                         <select name="type" id="type" class="form-control" required="">
                                                             <option value="" selected="" disabled="">@lang('Select One')</option>
-                                                        <option value="1" @if($property->type == 1) selected @endif>@lang('For Sale')</option>
+                                                        {{-- <option value="1" @if($property->type == 1) selected @endif>@lang('For Sale')</option> --}}
                                                         <option value="2" @if($property->type == 2) selected @endif>@lang('For Rent')</option>
                                                         </select>
                                                     </div>
@@ -182,6 +192,16 @@
                                                 </div>
                                             </div>
 
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>@lang('Property Document')</label>
+                                                    <div class="single-input">
+                                                        <img src="{{ getImage(getFilePath('property') .'/'.@$propertyInfo->property_docs) }}" width="100%" alt="image">
+                                                        <input type="file" name="property_docs" >
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -269,7 +289,7 @@
                         </div>
                        </div>
                       </div>
-                      
+
                        	<div class="form-group float-end  p-3">
                             <button type="submit" class="btn btn--primary btn-block btn-lg"><i class="fa fa-fw fa-paper-plane"></i> @lang('Save')</button>
                         </div>

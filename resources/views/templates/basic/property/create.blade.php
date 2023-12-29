@@ -194,6 +194,14 @@
                                 </div>
                             </div>
                             <div class="col-lg-12">
+                                <div class="form-group profile mb-15">
+                                    <label>@lang('Property Document / Proof of ownership') (required)</label>
+                                    <div class="single-input">
+                                        <input type="file" name="property_docs" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
                                 <div class="row form-group profile property-img">
                                     <div class="col-12">
                                         <label for="proeerty_salce_price">@lang('Property Image')</label>

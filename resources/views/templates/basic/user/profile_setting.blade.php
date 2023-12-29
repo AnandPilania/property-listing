@@ -2,8 +2,104 @@
 @section('content')
     <div class="col-xl-8 col-lg-8 col-md-12">
         <div class="dashboard_box mb-30">
-            <h4 class="title mb-25">@lang('Personal Details ')</h4>
             <div class="dashboard_body">
+                <div class="row">
+                    <div class="col-12">
+                        <h4>Document KYC</h4>
+                        <p>Complete this KYC to unlock all features of this platform</p>
+                        <br>
+                        @if (Auth::user()->doc_kyc_doc_file && Auth::user()->doc_kyc_status == 'accepted')
+                            <p>KYC Complete <i class="text-success fa fa-check"></i></p>
+                            <table class="table">
+                                <tr>
+                                    <th>Document Type</th>
+                                    <td>{{ Auth::user()->doc_kyc_document_type }}</td>
+                                </tr>
+                            </table>
+                        @elseif(Auth::user()->doc_kyc_doc_file && Auth::user()->doc_kyc_status == 'rejected')
+                            <p>Your KYC Has been rejected, you can try again below</p>
+                            <table class="table">
+                                <tr>
+                                    <th>Document Type</th>
+                                    <td>{{ Auth::user()->doc_kyc_document_type }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Rejection Reason</th>
+                                    <td>{{ Auth::user()->doc_kyc_rejection_reason }}</td>
+                                </tr>
+                            </table>
+                            <br>
+                            <form action="{{route('user.profile.update_kyc')}}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="ui-widget">
+                                            <label for="gender">Document Type <i class="text-danger">*</i> : </label>
+                                            <select name="doc_type_" id="doc_type" class="form-control" required>
+                                                <option value="">--select document type--</option>
+                                                <option value="EU National ID Card">EU National ID Card</option>
+                                                <option value="ID Card">ID Card</option>
+                                                <option value="EU Driving License">EU Driving License</option>
+                                                <option value="Others">Others</option>
+                                                <option value="Passport">Passport</option>
+                                                <option value="EU Resident Card">EU Resident Card</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="ui-widget">
+                                            <label for="doc_front">Document(jpeg, jpg, png,pdf only) <i class="text-danger">*</i> : </label>
+                                            <input type="file" id="doc" name="doc" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <button type="submit" class="btn btn-primary">Submit KYC</button>
+                            </form>
+                        @elseif(Auth::user()->doc_kyc_doc_file && Auth::user()->doc_kyc_status == 'pending')
+                            <p>KYC Processing <i class="text-warning fa fa-check"></i>, please check again shortly.</p>
+                            <table class="table">
+                                <tr>
+                                    <th>Document Type</th>
+                                    <td>{{ Auth::user()->doc_kyc_document_type }}</td>
+                                </tr>
+                            </table>
+                        @elseif(!Auth::user()->doc_kyc_doc_file && Auth::user()->doc_kyc_status == 'pending')
+                            <p>No KYC Documnet Uploaded, you cannot fully utilize this platform. Fill the form below to submit
+                                KYC.</p>
+                                <br>
+                            <form action="{{route('user.profile.update_kyc')}}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="ui-widget">
+                                            <label for="gender">Document Type <i class="text-danger">*</i> : </label>
+                                            <select name="doc_type_" id="doc_type" class="form-control" required>
+                                                <option value="">--select document type--</option>
+                                                <option value="EU National ID Card">EU National ID Card</option>
+                                                <option value="ID Card">ID Card</option>
+                                                <option value="EU Driving License">EU Driving License</option>
+                                                <option value="Others">Others</option>
+                                                <option value="Passport">Passport</option>
+                                                <option value="EU Resident Card">EU Resident Card</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="ui-widget">
+                                            <label for="doc_front">Document(jpeg, jpg, png,pdf only) <i class="text-danger">*</i> : </label>
+                                            <input type="file" id="doc" name="doc" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <button type="submit" class="btn btn-primary">Submit KYC</button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
+                <hr>
+                <h4 class="title mb-25">@lang('Personal Details ')</h4>
                 <div class="row">
                     <div class="col-lg-12">
                         <form class="register" action="" method="post" enctype="multipart/form-data">
@@ -186,103 +282,6 @@
                                             class="fa-solid fa-angles-right"></i></span></button>
                             </div>
                         </form>
-                    </div>
-                </div>
-                <hr>
-                <div class="row">
-                    <div class="col-12">
-                        <h4>Document KYC</h4>
-                        <p>Complete this KYC to post propery listings</p>
-                        <br>
-
-                        @if (Auth::user()->doc_kyc_doc_file && Auth::user()->doc_kyc_status == 'accepted')
-                            <p>KYC Complete <i class="text-success fa fa-check"></i></p>
-                            <table class="table">
-                                <tr>
-                                    <th>Document Type</th>
-                                    <td>{{ Auth::user()->doc_kyc_document_type }}</td>
-                                </tr>
-                            </table>
-                        @elseif(Auth::user()->doc_kyc_doc_file && Auth::user()->doc_kyc_status == 'rejected')
-                            <p>Your KYC Has been rejected, you can try again below</p>
-                            <table class="table">
-                                <tr>
-                                    <th>Document Type</th>
-                                    <td>{{ Auth::user()->doc_kyc_document_type }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Rejection Reason</th>
-                                    <td>{{ Auth::user()->doc_kyc_rejection_reason }}</td>
-                                </tr>
-                            </table>
-                            <br>
-                            <form action="{{route('user.profile.update_kyc')}}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="ui-widget">
-                                            <label for="gender">Document Type <i class="text-danger">*</i> : </label>
-                                            <select name="doc_type_" id="doc_type" class="form-control" required>
-                                                <option value="">--select document type--</option>
-                                                <option value="EU National ID Card">EU National ID Card</option>
-                                                <option value="ID Card">ID Card</option>
-                                                <option value="EU Driving License">EU Driving License</option>
-                                                <option value="Others">Others</option>
-                                                <option value="Passport">Passport</option>
-                                                <option value="EU Resident Card">EU Resident Card</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="ui-widget">
-                                            <label for="doc_front">Document(jpeg, jpg, png,pdf only) <i class="text-danger">*</i> : </label>
-                                            <input type="file" id="doc" name="doc" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <button type="submit" class="btn btn-primary">Submit KYC</button>
-                            </form>
-                        @elseif(Auth::user()->doc_kyc_doc_file && Auth::user()->doc_kyc_status == 'pending')
-                            <p>KYC Processing <i class="text-warning fa fa-check"></i>, please check again shortly.</p>
-                            <table class="table">
-                                <tr>
-                                    <th>Document Type</th>
-                                    <td>{{ Auth::user()->doc_kyc_document_type }}</td>
-                                </tr>
-                            </table>
-                        @elseif(!Auth::user()->doc_kyc_doc_file && Auth::user()->doc_kyc_status == 'pending')
-                            <p>No KYC Documnet Uploaded, you cannot post property listings. Fill the form below to submit
-                                KYC.</p>
-                                <br>
-                            <form action="{{route('user.profile.update_kyc')}}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="ui-widget">
-                                            <label for="gender">Document Type <i class="text-danger">*</i> : </label>
-                                            <select name="doc_type_" id="doc_type" class="form-control" required>
-                                                <option value="">--select document type--</option>
-                                                <option value="EU National ID Card">EU National ID Card</option>
-                                                <option value="ID Card">ID Card</option>
-                                                <option value="EU Driving License">EU Driving License</option>
-                                                <option value="Others">Others</option>
-                                                <option value="Passport">Passport</option>
-                                                <option value="EU Resident Card">EU Resident Card</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="ui-widget">
-                                            <label for="doc_front">Document(jpeg, jpg, png,pdf only) <i class="text-danger">*</i> : </label>
-                                            <input type="file" id="doc" name="doc" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <button type="submit" class="btn btn-primary">Submit KYC</button>
-                            </form>
-                        @endif
                     </div>
                 </div>
             </div>

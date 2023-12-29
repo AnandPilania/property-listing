@@ -23,8 +23,10 @@ use App\Models\FeaturedSubscription;
 use App\Models\PropertyInfo;
 use Illuminate\Support\Facades\Cookie;
 
-class SiteController extends Controller {
-    public function index() {
+class SiteController extends Controller
+{
+    public function index()
+    {
         $reference = @$_GET['reference'];
         if ($reference) {
             session()->put('reference', $reference);
@@ -34,7 +36,8 @@ class SiteController extends Controller {
         return view($this->activeTemplate . 'home', compact('pageTitle', 'sections'));
     }
 
-    public function pages($slug) {
+    public function pages($slug)
+    {
         $page = Page::where('tempname', $this->activeTemplate)->where('slug', $slug)->firstOrFail();
         $pageTitle = $page->name;
         $sections = $page->secs;
@@ -42,12 +45,14 @@ class SiteController extends Controller {
     }
 
 
-    public function contact() {
+    public function contact()
+    {
         $pageTitle = "Contact Us";
         return view($this->activeTemplate . 'contact', compact('pageTitle'));
     }
 
-    public function subscribe(Request $request) {
+    public function subscribe(Request $request)
+    {
 
         $request->validate([
             'email' => 'required|unique:subscribers',
@@ -59,12 +64,12 @@ class SiteController extends Controller {
 
         $notify[] = ['success', 'You have successfully subscribed to the Newsletter'];
         return back()->withNotify($notify);
-
     }
 
 
 
-    public function contactSubmit(Request $request) {
+    public function contactSubmit(Request $request)
+    {
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required',
@@ -110,13 +115,15 @@ class SiteController extends Controller {
         return to_route('ticket.view', [$ticket->ticket])->withNotify($notify);
     }
 
-    public function policyPages($slug, $id) {
+    public function policyPages($slug, $id)
+    {
         $policy = Frontend::where('id', $id)->where('data_keys', 'policy_pages.element')->firstOrFail();
         $pageTitle = $policy->data_values->title;
         return view($this->activeTemplate . 'policy', compact('policy', 'pageTitle'));
     }
 
-    public function changeLanguage($lang = null) {
+    public function changeLanguage($lang = null)
+    {
         $language = Language::where('code', $lang)->first();
         if (!$language)
             $lang = 'en';
@@ -124,7 +131,8 @@ class SiteController extends Controller {
         return back();
     }
 
-    public function blog() {
+    public function blog()
+    {
         $pageTitle = 'Blog';
         $section = Page::where('tempname', $this->activeTemplate)->where('slug', 'blog')->firstOrFail();
         $blogs = Frontend::where('data_keys', 'blog.element')->orderBy('id', 'desc')->paginate(getPaginate());
@@ -135,7 +143,8 @@ class SiteController extends Controller {
     }
 
 
-    public function blogDetails($slug, $id) {
+    public function blogDetails($slug, $id)
+    {
         $blog = Frontend::where('id', $id)->where('data_keys', 'blog.element')->firstOrFail();
         $pageTitle = 'Blog';
         $latests = Frontend::where('data_keys', 'blog.element')->orderBy('id', 'desc')->limit(5)->get();
@@ -144,7 +153,8 @@ class SiteController extends Controller {
     }
 
 
-    public function plans() {
+    public function plans()
+    {
         $pageTitle = "Plan";
         $sections = Page::where('tempname', $this->activeTemplate)->where('slug', 'plan')->firstOrFail();
         $gatewayCurrency = GatewayCurrency::whereHas('method', function ($gate) {
@@ -156,19 +166,22 @@ class SiteController extends Controller {
         return view($this->activeTemplate . 'plan.plan', compact('user', 'plans', 'sections', 'gatewayCurrency', 'pageTitle'));
     }
 
-    public function cookieAccept() {
+    public function cookieAccept()
+    {
         $general = gs();
         Cookie::queue('gdpr_cookie', $general->site_name, 43200);
         return back();
     }
 
-    public function cookiePolicy() {
+    public function cookiePolicy()
+    {
         $pageTitle = 'Cookie Policy';
         $cookie = Frontend::where('data_keys', 'cookie.data')->first();
         return view($this->activeTemplate . 'cookie', compact('pageTitle', 'cookie'));
     }
 
-    public function placeholderImage($size = null) {
+    public function placeholderImage($size = null)
+    {
         $imgWidth = explode('x', $size)[0];
         $imgHeight = explode('x', $size)[1];
         $text = $imgWidth . '×' . $imgHeight;
@@ -197,15 +210,16 @@ class SiteController extends Controller {
     }
 
 
-    public function propertyShow() {
+    public function propertyShow()
+    {
 
         $pageTitle = 'Property';
 
         $topProperties = Property::whereHas('featuredPlan', function ($q) {
-            $q->where('expire_date' ,'>' , now());
+            $q->where('expire_date', '>', now());
         })->inRandomOrder()->limit(2)->get();
 
-        $properties = Property::where('status', 1)->with('location', 'city', 'propertyInfo', 'propertyImage', 'propertyType')->orderBy('created_at','desc')->paginate(getPaginate(12));
+        $properties = Property::where('status', 1)->where('property_available', 1)->with('location', 'city', 'propertyInfo', 'propertyImage', 'propertyType')->orderBy('created_at', 'desc')->paginate(getPaginate(12));
 
         $contacts = Frontend::where('data_keys', 'contact_us.content')->orderBy('id', 'desc')->firstOrFail();
         $propertyTypes = PropertyType::withcount('properties')->get();
@@ -213,10 +227,11 @@ class SiteController extends Controller {
         $bathrooms = PropertyInfo::groupBy('bathroom')->distinct()->pluck('bathroom');
         $rooms = PropertyInfo::groupBy('room')->distinct()->pluck('room');
 
-        return view($this->activeTemplate . 'property', compact('topProperties','rooms', 'bathrooms', 'cities', 'propertyTypes', 'contacts', 'properties', 'pageTitle'));
+        return view($this->activeTemplate . 'property', compact('topProperties', 'rooms', 'bathrooms', 'cities', 'propertyTypes', 'contacts', 'properties', 'pageTitle'));
     }
 
-    public function propertyDetails($slug, $id) {
+    public function propertyDetails($slug, $id)
+    {
         $properties = Property::with('location', 'city', 'propertyInfo', 'propertyImage', 'propertyType')->findOrFail($id);
         $pageTitle = $properties->title;
         $contacts = Frontend::where('data_keys', 'contact_us.content')->orderBy('id', 'desc')->firstOrFail();
@@ -230,7 +245,8 @@ class SiteController extends Controller {
     }
 
 
-    public function propertySearch(Request $request) {
+    public function propertySearch(Request $request)
+    {
 
         $pageTitle = 'Property Search';
         $bathrooms = $request->bathroom;
@@ -284,12 +300,12 @@ class SiteController extends Controller {
             $conditions[] = ['title', 'like', "%$search%"];
         }
 
-        $properties = Property::where($conditions)->whereHas('propertyInfo', function ($q) use ($hasConditions) {
-                    $q->where($hasConditions);
-            })->with('location', 'city', 'propertyInfo', 'propertyImage', 'propertyType')->orderBy('id', 'DESC')->paginate(getPaginate());
+        $properties = Property::where($conditions)->where('property_available', 1)->whereHas('propertyInfo', function ($q) use ($hasConditions) {
+            $q->where($hasConditions);
+        })->with('location', 'city', 'propertyInfo', 'propertyImage', 'propertyType')->orderBy('id', 'DESC')->paginate(getPaginate());
 
         $topProperties = Property::whereHas('featuredPlan', function ($q) {
-            $q->where('expire_date' ,'>' , now());
+            $q->where('expire_date', '>', now());
         })->inRandomOrder()->limit(2)->get();
 
 
@@ -299,11 +315,11 @@ class SiteController extends Controller {
         $bathrooms = PropertyInfo::groupBy('bathroom')->distinct()->pluck('bathroom');
         $rooms = PropertyInfo::groupBy('room')->distinct()->pluck('room');
 
-        return view($this->activeTemplate . 'property', compact('topProperties','rooms', 'bathrooms', 'cities', 'propertyTypes','contacts', 'properties', 'pageTitle'));
-
+        return view($this->activeTemplate . 'property', compact('topProperties', 'rooms', 'bathrooms', 'cities', 'propertyTypes', 'contacts', 'properties', 'pageTitle'));
     }
 
-    public function cityProperty($id) {
+    public function cityProperty($id)
+    {
 
         $city = City::findOrFail($id);
         $pageTitle = $city->name . " Property";
@@ -312,16 +328,12 @@ class SiteController extends Controller {
         $bathrooms = PropertyInfo::groupBy('bathroom')->distinct()->pluck('bathroom');
         $rooms = PropertyInfo::groupBy('room')->distinct()->pluck('room');
         $contacts = Frontend::where('data_keys', 'contact_us.content')->orderBy('id', 'desc')->firstOrFail();
-        $properties = Property::where('status', 1)->where('city_id', $city->id)->with('location', 'city', 'propertyInfo', 'propertyImage', 'propertyType')->paginate(getPaginate(12));
+        $properties = Property::where('status', 1)->where('property_available', 1)->where('city_id', $city->id)->with('location', 'city', 'propertyInfo', 'propertyImage', 'propertyType')->paginate(getPaginate(12));
 
         $topProperties = Property::whereHas('featuredPlan', function ($q) {
-            $q->where('expire_date' ,'>' , now());
+            $q->where('expire_date', '>', now());
         })->inRandomOrder()->limit(2)->get();
 
-        return view($this->activeTemplate . 'property', compact('topProperties','contacts', 'rooms', 'bathrooms', 'pageTitle', 'properties', 'cities', 'propertyTypes'));
-
+        return view($this->activeTemplate . 'property', compact('topProperties', 'contacts', 'rooms', 'bathrooms', 'pageTitle', 'properties', 'cities', 'propertyTypes'));
     }
-
-
-
 }

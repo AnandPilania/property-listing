@@ -68,13 +68,13 @@
                                 <a class="d-block btn bg--primary bal-btn" href="javascript:void(0)" data-bs-toggle="modal"
                                     data-bs-target="#addSubModal" data-act="add"><i class="las la-plus-circle"></i>
                                     @lang('Add
-                                                                    Balance')</a>
+                                                                                                        Balance')</a>
                             </li>
                             <li class="flex-grow-1 flex-shrink-0">
                                 <a class="d-block btn bg--primary bal-btn" href="javascript:void(0)" data-bs-toggle="modal"
                                     data-bs-target="#addSubModal" data-act="sub"><i class="las la-minus-circle"></i>
                                     @lang('Substract
-                                                                    Balance')</a>
+                                                                                                        Balance')</a>
                             </li>
 
                             <li class="flex-grow-1 flex-shrink-0">
@@ -124,7 +124,15 @@
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">@lang('Information of') {{ $user->fullname }}</h5>
+                            <h5 class="card-title mb-0">
+                                @lang('Information of') {{ $user->fullname }}
+
+                                @if ($user->is_landlord == 1)
+                                    <span class="badge badge-secondary">Landlord</span>
+                                @else
+                                    <span class="badge badge-secondary">User</span>
+                                @endif
+                            </h5>
                         </div>
                         <div class="card-body">
                             <form action="{{ route('admin.users.update', [$user->id]) }}" method="POST"
@@ -317,7 +325,9 @@
                                 </tr>
                                 <tr>
                                     <th>Document File</th>
-                                    <td><a href="{{ asset('/assets/images/frontend/profile/' . $user->doc_kyc_doc_file) }}" target="_blank" rel="noopener noreferrer">{{ $user->doc_kyc_document_type }}</a></td>
+                                    <td><a href="{{ asset('/assets/images/frontend/profile/' . $user->doc_kyc_doc_file) }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer">{{ $user->doc_kyc_document_type }}</a></td>
                                 </tr>
                             </table>
                         @elseif($user->doc_kyc_doc_file && $user->doc_kyc_status == 'rejected')
@@ -329,7 +339,9 @@
                                 </tr>
                                 <tr>
                                     <th>Document File</th>
-                                    <td><a href="{{ asset('/assets/images/frontend/profile/' . $user->doc_kyc_doc_file) }}" target="_blank" rel="noopener noreferrer">{{ $user->doc_kyc_document_type }}</a></td>
+                                    <td><a href="{{ asset('/assets/images/frontend/profile/' . $user->doc_kyc_doc_file) }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer">{{ $user->doc_kyc_document_type }}</a></td>
                                 </tr>
                                 <tr>
                                     <th>Rejection Reason</th>
@@ -346,7 +358,9 @@
                                 </tr>
                                 <tr>
                                     <th>Document File</th>
-                                    <td><a href="{{ asset('/assets/images/frontend/profile/' . $user->doc_kyc_doc_file) }}" target="_blank" rel="noopener noreferrer">{{ $user->doc_kyc_document_type }}</a></td>
+                                    <td><a href="{{ asset('/assets/images/frontend/profile/' . $user->doc_kyc_doc_file) }}"
+                                            target="_blank"
+                                            rel="noopener noreferrer">{{ $user->doc_kyc_document_type }}</a></td>
                                 </tr>
                             </table>
                         @elseif(!$user->doc_kyc_doc_file && $user->doc_kyc_status == 'pending')
@@ -404,7 +418,7 @@
                     <div class="modal-body">
                         @if ($user->status == 1)
                             <h6 class="mb-2">@lang('If you ban this user he/she won\'t able to access his/her
-                                                    dashboard.')</h6>
+                                                                                dashboard.')</h6>
                             <div class="form-group">
                                 <label>@lang('Reason')</label>
                                 <textarea class="form-control" name="reason" rows="4" required></textarea>

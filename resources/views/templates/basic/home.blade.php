@@ -50,16 +50,16 @@ $rooms = App\Models\PropertyInfo::groupby('room')
                                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel">
 
                                     <div class="row align-items-center">
-                                        <div class="col-lg-4 col-md-6">
+                                        <div class="col-lg-4 col-md-6" style="display: none;">
                                             <div class="nice_select_wrapper banner mb-30 style_1">
                                                 <p>@lang('type')</p>
                                                 <select name="type" class="all_select">
-                                                    <option value="1">@lang('For Sale')</option>
-                                                    <option value="2">@lang('For Rent')</option>
+                                                    {{-- <option value="1">@lang('For Sale')</option> --}}
+                                                    <option value="2" selected>@lang('For Rent')</option>
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4 col-md-6">
+                                        <div class="col-lg-6 col-md-6">
                                             <div class="nice_select_wrapper banner mb-30 style_1">
                                                 <p>@lang('Property type')</p>
                                                 <select name="property_type" class="all_select">
@@ -72,7 +72,7 @@ $rooms = App\Models\PropertyInfo::groupby('room')
                                             </div>
                                         </div>
 
-                                        <div class="col-lg-4 col-md-6">
+                                        <div class="col-lg-6 col-md-6">
                                             <div class="advance_search_wrap mb-30">
                                                 <p>@lang('Advance Search')</p>
                                                 <span class="advance_btn">@lang('Advance Search')<i
@@ -91,7 +91,7 @@ $rooms = App\Models\PropertyInfo::groupby('room')
                                 <div class="tab-pane fade" id="pills-profile" role="tabpanel">
 
                                     <div class="row align-items-center">
-                                       
+
                                         <div class="col-lg-4 col-md-6">
                                             <div class="advance_search_wrap mb-30">
                                                 <p>@lang('Advance Search')</p>

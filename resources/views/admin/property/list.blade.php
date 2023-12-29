@@ -11,7 +11,8 @@
                                     <th>@lang('Title - City - Location')</th>
                                     <th>@lang('Phone - Email')</th>
                                     <th>@lang('Price - Square Feet')</th>
-                                    <th>@lang('Status')</th>
+                                    <th>@lang('Approval Status')</th>
+                                    <th>@lang('Availability Status')</th>
                                     <th>@lang('Action')</th>
                                 </tr>
                             </thead>
@@ -40,6 +41,13 @@
                                                 <span class="badge badge--danger">@lang('Cancel')</span>
                                             @elseif($propertie->status == 0)
                                                 <span class="badge badge--primary">@lang('Pending')</span>
+                                            @endif
+                                        </td>
+                                        <td data-label="@lang('Availability Status')">
+                                            @if ($propertie->property_available == 1)
+                                                <span class="badge badge--success">@lang('Available')</span>
+                                            @elseif($propertie->property_available == 0 || $propertie->property_available == null)
+                                                <span class="badge badge--danger">@lang('Unavailable')</span>
                                             @endif
                                         </td>
                                         <td data-label="@lang('Action')">

@@ -24,10 +24,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="nice_select_wrapper mb-20 style_1">
+                                <div class="nice_select_wrapper mb-20 style_1" style="display: none;">
                                     <select name="type" class="all_select">
                                         {{-- <option value="1">@lang('For Sale')</option> --}}
-                                        <option value="2">@lang('For Rent')</option>
+                                        <option value="2" selected>@lang('For Rent')</option>
                                     </select>
                                 </div>
                                 <div class="nice_select_wrapper mb-20 style_1">

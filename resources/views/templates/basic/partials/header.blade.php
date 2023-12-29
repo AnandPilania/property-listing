@@ -47,10 +47,15 @@
                             <li>
                                 <ul class="list-unstyled">
                                     @foreach ($social_icon as $item)
-                                        <li class="ms-2"><a href="{{ __($item->data_values->url) }}"> <i></i>
-                                                @php
-                                                    echo $item->data_values->social_icon;
-                                                @endphp </a></li>
+                                        <li class="ms-2">
+                                            <a href="{{ __($item->data_values->url) }}">
+                                                <i>
+                                                    @php
+                                                        echo $item->data_values->social_icon;
+                                                    @endphp
+                                                </i>
+                                            </a>
+                                        </li>
                                     @endforeach
 
                                 </ul>
@@ -121,7 +126,7 @@
                                                 href="{{ route('user.home') }}">@lang('Dashboard')</a>
                                         </li>
                                     @endauth
-                                    @if (Auth::user() && Auth::user()->doc_kyc_status == 'accepted')
+                                    @if (Auth::user() && Auth::user()->doc_kyc_status == 'accepted' && Auth::user() && Auth::user()->is_landlord == 1)
                                         <li>
                                             <a href="{{ route('user.property.index') }}" class="theme_btn"><span
                                                     class="btn_title"> <i class="fa-solid fa-house"></i>

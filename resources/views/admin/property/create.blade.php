@@ -229,6 +229,16 @@
                                         </div>
                                     </div>
 
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label>@lang('Property Document')</label>
+                                            <div class="single-input">
+                                                <img src="{{ getImage(getFilePath('property') .'/'.@$propertyInfo->property_docs) }}" width="200" alt="image">
+                                                <input type="file" name="property_docs" >
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

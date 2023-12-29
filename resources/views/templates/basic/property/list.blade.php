@@ -14,6 +14,7 @@
                                     <th>@lang('Property - Location')</th>
                                     <th>@lang('Price - Square Feet')</th>
                                     <th>@lang('Status')</th>
+                                    <th>@lang('Is Approved')</th>
                                     <th>@lang('Action')</th>
                                 </tr>
                             </thead>
@@ -32,6 +33,9 @@
                                     </td>
                                     <td >
                                         @php echo $propertie->statusBadge($propertie->status); @endphp
+                                    </td>
+                                    <td >
+                                        @php echo $propertie->statusBadge($propertie->property_available); @endphp
                                     </td>
                                     <td><a href="{{route('user.property.edit',$propertie->id)}}"> <i class="fa fa-pencil"></i> </a></td>
                                 </tr>
