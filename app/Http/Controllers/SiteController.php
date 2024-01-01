@@ -24,6 +24,7 @@ use App\Models\PropertyInfo;
 use App\Models\User;
 use Illuminate\Support\Facades\Cookie;
 use Chat;
+use Illuminate\Support\Facades\Auth;
 
 class SiteController extends Controller
 {
@@ -157,12 +158,21 @@ class SiteController extends Controller
 
     public function plans()
     {
-        $pageTitle = "Plan";
+        $pageTitle = "Plans";
         $sections = Page::where('tempname', $this->activeTemplate)->where('slug', 'plan')->firstOrFail();
         $gatewayCurrency = GatewayCurrency::whereHas('method', function ($gate) {
             $gate->where('status', 1);
         })->with('method')->orderby('method_code')->get();
-        $plans = Plan::orderBy('id', 'desc')->paginate(getPaginate());
+        if (Auth::user() && Auth::user()->is_landlord == true) {
+            $plans = Plan::where('plan_type', 'landlord')->orderBy('id', 'desc')->paginate(getPaginate());
+        } elseif (Auth::user() && Auth::user()->is_landlord == false) {
+            $plans = Plan::where('plan_type', 'user')->orderBy('id', 'desc')->paginate(getPaginate());
+        } else {
+            $plans = Plan::orderBy('id', 'desc')->paginate(getPaginate());
+        }
+
+        // dd($plans);
+
 
         $user = PlanSubscribe::where('user_id', @auth()->user()->id)->with('getUserPlanSubscribe')->orderBy('id', 'desc')->first();
         return view($this->activeTemplate . 'plan.plan', compact('user', 'plans', 'sections', 'gatewayCurrency', 'pageTitle'));
