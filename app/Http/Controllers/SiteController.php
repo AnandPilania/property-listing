@@ -21,7 +21,9 @@ use App\Models\AdminNotification;
 use App\Models\FeaturedPlan;
 use App\Models\FeaturedSubscription;
 use App\Models\PropertyInfo;
+use App\Models\User;
 use Illuminate\Support\Facades\Cookie;
+use Chat;
 
 class SiteController extends Controller
 {
@@ -230,7 +232,7 @@ class SiteController extends Controller
         return view($this->activeTemplate . 'property', compact('topProperties', 'rooms', 'bathrooms', 'cities', 'propertyTypes', 'contacts', 'properties', 'pageTitle'));
     }
 
-    public function propertyDetails($slug, $id)
+    public function propertyDetails(Request $request, $slug, $id)
     {
         $properties = Property::with('location', 'city', 'propertyInfo', 'propertyImage', 'propertyType')->findOrFail($id);
         $pageTitle = $properties->title;
@@ -241,7 +243,17 @@ class SiteController extends Controller
         $bathrooms = PropertyInfo::groupBy('bathroom')->distinct()->pluck('bathroom');
         $rooms = PropertyInfo::groupBy('room')->distinct()->pluck('room');
 
-        return view($this->activeTemplate . 'property_details', compact('rooms', 'bathrooms', 'cities', 'propertyTypes', 'latests', 'contacts', 'properties', 'pageTitle'));
+        $participantModel = User::where('id', auth()->id())->first();
+        if ($request->page) {
+            $page = $request->page;
+        } else {
+            $page = 1;
+        }
+        $chats = Chat::conversations()->setPaginationParams(['sorting' => 'desc', 'perPage' => 50, 'page' => $page])
+            ->setParticipant($participantModel)
+            ->get();
+
+        return view($this->activeTemplate . 'property_details', compact('rooms', 'bathrooms', 'cities', 'propertyTypes', 'latests', 'contacts', 'properties', 'pageTitle', 'chats'));
     }
 
 

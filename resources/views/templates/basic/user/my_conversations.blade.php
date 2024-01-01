@@ -67,7 +67,7 @@
                                         @foreach ($chats as $chat)
                                             <li class="list-group-item">
                                                 <a href="{{ route('conversation.show', $chat->id) }}">
-                                                    {{ $chat->id }} - {{ json_decode($chat->data)->name }}
+                                                    {{ json_decode($chat->data)->name }}
                                                     <br>
                                                     <small>{{ json_decode($chat->data)->description }}</small>
                                                 </a>

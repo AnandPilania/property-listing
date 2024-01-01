@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\GroupChatInvite;
+use App\Models\Property;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Chat;
@@ -254,6 +255,39 @@ class GroupchatController extends Controller
         } catch (\Exception $e) {
             Log::error($e->getMessage(), [$e]);
             $notify[] = ['error', 'Failed to Declined Invite.'];
+            return back()->withNotify($notify);
+        }
+    }
+
+    public function share_prop_to_conversation(Request $request)
+    {
+        $request->validate([
+            'chat_id' => 'required|array',
+            'chat_id.*' => 'required',
+            'prop_id' => 'required',
+        ]);
+
+        if ($request->chat_id && count($request->chat_id) > 0) {
+            //get the user information
+            $part = User::where('id', Auth::id())->first();
+
+            //get the property information
+            $prop = Property::where('id', $request->prop_id)->first();
+            $prop_url = route('property.details', [slug($prop->title), $prop->id]);
+
+            //construct the message
+            $message_str = "@" . $part->username . " Shared the property : <u><a href='" . $prop_url . "' target='_blank'>" . $prop->title . "</a></u>";
+
+            //send the message to each of the user's conversations
+            foreach ($request->chat_id as $conversation) {
+                $conversation = Chat::conversations()->getById($conversation);
+                $message = Chat::message($message_str)
+                    ->type('text')
+                    ->from($part)
+                    ->to($conversation)
+                    ->send();
+            }
+            $notify[] = ['success', 'Property shared to selected conversations'];
             return back()->withNotify($notify);
         }
     }

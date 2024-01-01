@@ -266,29 +266,29 @@ class PropertyController extends Controller
 
                 //send notification to all user conversations
 
-                //lets get all coversations where the user is a participant
-                $q = "SELECT * FROM " . ConfigurationManager::PARTICIPATION_TABLE . " WHERE messageable_id = ?";
-                $conversations = DB::select($q, [Auth::id()]);
+                // //lets get all coversations where the user is a participant
+                // $q = "SELECT * FROM " . ConfigurationManager::PARTICIPATION_TABLE . " WHERE messageable_id = ?";
+                // $conversations = DB::select($q, [Auth::id()]);
 
-                //get the user information
-                $part = User::where('id', Auth::id())->first();
+                // //get the user information
+                // $part = User::where('id', Auth::id())->first();
 
-                //get the property information
-                $prop = Property::where('id', $id)->first();
-                $prop_url = route('property.details', [slug($prop->title), $prop->id]);
+                // //get the property information
+                // $prop = Property::where('id', $id)->first();
+                // $prop_url = route('property.details', [slug($prop->title), $prop->id]);
 
-                //construct the message
-                $message_str = "@" . $part->username . " Liked the property : <u><a href='" . $prop_url . "' target='_blank'>" . $prop->title . "</a></u>";
+                // //construct the message
+                // $message_str = "@" . $part->username . " Liked the property : <u><a href='" . $prop_url . "' target='_blank'>" . $prop->title . "</a></u>";
 
-                //send the message to each of the user's conversations
-                foreach ($conversations as $conversation) {
-                    $conversation = Chat::conversations()->getById($conversation->conversation_id);
-                    $message = Chat::message($message_str)
-                        ->type('text')
-                        ->from($part)
-                        ->to($conversation)
-                        ->send();
-                }
+                // //send the message to each of the user's conversations
+                // foreach ($conversations as $conversation) {
+                //     $conversation = Chat::conversations()->getById($conversation->conversation_id);
+                //     $message = Chat::message($message_str)
+                //         ->type('text')
+                //         ->from($part)
+                //         ->to($conversation)
+                //         ->send();
+                // }
                 $notify[] = ['success', 'Property Add to wishlist'];
                 return back()->withNotify($notify);
             }

@@ -188,11 +188,13 @@
                                                                         <p>
                                                                             {!! $message->body !!}
                                                                         </p>
-                                                                        </p>
+                                                                        <i><small>{{diffForHumans($message->created_at)}}</small></i>
                                                                     </div>
                                                                     <img src="{{ asset('/assets/images/frontend/profile/' . $message->sender->image) }}"
                                                                         alt="avatar"
                                                                         style="width: 45px; height: 100%; border-radius:50%;">
+
+
                                                                 </div>
                                                             @else
                                                                 <div class="d-flex flex-row justify-content-start mb-4">
@@ -209,6 +211,7 @@
                                                                         <p>
                                                                             {!! $message->body !!}
                                                                         </p>
+                                                                        <i><small>{{diffForHumans($message->created_at)}}</small></i>
                                                                     </div>
                                                                 </div>
                                                             @endif

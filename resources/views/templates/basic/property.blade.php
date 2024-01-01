@@ -110,7 +110,7 @@
 
                     </ul>
                 </div>
-                <div class="widget_box mb-30 single_featured">
+                {{-- <div class="widget_box mb-30 single_featured">
                     <div class="widget_box_header">
                         <h4 class="mb-20">@lang('Contact Information')</h4>
                     </div>
@@ -141,7 +141,7 @@
                             <p><a href="javascript:void(0)">{{ __($contacts->data_values->email_address) }}</a> </p>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </aside>
             <div class="col-xl-8 col-lg-8">
                 <div class="row">

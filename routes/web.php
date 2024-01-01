@@ -30,6 +30,7 @@ Route::controller('GroupchatController')->prefix('conversation')->middleware('au
     Route::get('/accept_invite/{conversation_id}/{user_id}', 'accept_invite')->name('conversation.accept_invite');
     Route::get('/decline_invite/{conversation_id}/{user_id}', 'decline_invite')->name('conversation.decline_invite');
     Route::get('/leave_group/{conversation_id}/{user_id}', 'leave_group')->name('conversation.leave_group');
+    Route::post('/share_prop_to_conversation', 'share_prop_to_conversation')->name('conversation.share_prop_to_conversation');
 });
 
 Route::get('app/deposit/confirm/{hash}', 'Gateway\PaymentController@appDepositConfirm')->name('deposit.app.confirm');
