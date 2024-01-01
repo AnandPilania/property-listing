@@ -63,9 +63,9 @@
                                             @if ($plansubscribe)
                                                 <h6 class="number">{{ __($plan->name) }} -
                                                     {{ $general->cur_sym }}{{ showAmount(__($plan->price)) }}</h6>
-                                                <p>{{ __($plan->listing_limit) }} @lang('Listings Per ') {{$item->validity}} days</p>
+                                                <p>{{ __($plan->listing_limit) }} @lang('Listings Per ') {{$plan->validity}} days</p>
                                                 <p>{{ __($plansubscribe->listings_left) }} @lang('Listings available')</p>
-                                                <p>{{ __($plan->inquiries_limit) }} @lang('Inquiries Per ') {{$item->validity}} days</p>
+                                                <p>{{ __($plan->inquiries_limit) }} @lang('Inquiries Per ') {{$plan->validity}} days</p>
                                                 <p>{{ __($plansubscribe->inquiries_left) }} @lang('Inquiries available')</p>
                                                 <p class="get-support">@lang('Lifetime Support')</p>
                                                 @if ($plan->id == $plansubscribe->plan_id)
