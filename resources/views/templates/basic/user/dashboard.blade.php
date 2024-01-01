@@ -49,7 +49,8 @@
                     <div class="col-lg-12 col-md-12 ">
                         @if (Auth::user() && Auth::user()->doc_kyc_status != 'accepted')
                             <div class="alert alert-danger">
-                                Click <a href="{{ route('user.profile.setting') }}"> <b><u>here</u></b> </a> to complete KYC and unlock
+                                Click <a href="{{ route('user.profile.setting') }}"> <b><u>here</u></b> </a> to complete KYC
+                                and unlock
                                 the full potential of this platform
                             </div>
                         @endif
@@ -63,9 +64,13 @@
                                             @if ($plansubscribe)
                                                 <h6 class="number">{{ __($plan->name) }} -
                                                     {{ $general->cur_sym }}{{ showAmount(__($plan->price)) }}</h6>
-                                                <p>{{ __($plan->listing_limit) }} @lang('Listings Per ') {{$plan->validity}} days</p>
-                                                <p>{{ __($plansubscribe->listings_left) }} @lang('Listings available')</p>
-                                                <p>{{ __($plan->inquiries_limit) }} @lang('Inquiries Per ') {{$plan->validity}} days</p>
+                                                @if ($plan->plan_type == 'landlord')
+                                                    <p>{{ __($plan->listing_limit) }} @lang('Listings Per ')
+                                                        {{ $plan->validity }} days</p>
+                                                    <p>{{ __($plansubscribe->listings_left) }} @lang('Listings available')</p>
+                                                @endif
+                                                <p>{{ __($plan->inquiries_limit) }} @lang('Inquiries Per ')
+                                                    {{ $plan->validity }} days</p>
                                                 <p>{{ __($plansubscribe->inquiries_left) }} @lang('Inquiries available')</p>
                                                 <p class="get-support">@lang('Lifetime Support')</p>
                                                 @if ($plan->id == $plansubscribe->plan_id)
@@ -77,7 +82,7 @@
                                                     <a href="{{ route('user.payment', $plan->id) }}"
                                                         class="theme_btn style_1 mb-10"><span
                                                             class="btn_title">@lang('Buy
-                                                                                                                                                                                                                                Now ')<i
+                                                                                                                                                                                                                                                                                            Now ')<i
                                                                 class="fa-solid fa-angles-right"></i></span> </a>
                                                 @endif
 

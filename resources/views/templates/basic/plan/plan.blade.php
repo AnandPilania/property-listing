@@ -22,7 +22,7 @@
                                 <span>{{ __($general->cur_sym) }}{{ showAmount(__($item->price)) }}</span>
                             </div>
                             <span>
-                                @if($item->plan_type =='user')
+                                @if ($item->plan_type == 'user')
                                     <span class="text-sm badge bg-info">For Users</span>
                                 @else
                                     <span class="text-sm badge bg-info">For Landlords</span>
@@ -31,16 +31,19 @@
                             <hr>
                             <div class="single_plan__body mb-35">
                                 <ul>
-                                    <li><i class="fa-solid fa-check"></i>{{ __($item->listing_limit) }} @lang('Listings Per ') {{$item->validity}} days
-                                    </li>
-                                    <li><i class="fa-solid fa-check"></i>{{ __($item->inquiries_limit) }} @lang('Inquiries Per ') {{$item->validity}} days </li>
+                                    @if ($plan->plan_type == 'landlord')
+                                        <li><i class="fa-solid fa-check"></i>{{ __($item->listing_limit) }}
+                                            @lang('Listings Per ') {{ $item->validity }} days
+                                        </li>
+                                    @endif
+                                    <li><i class="fa-solid fa-check"></i>{{ __($item->inquiries_limit) }} @lang('Inquiries Per ')
+                                        {{ $item->validity }} days </li>
                                     <li><i class="fa-solid fa-check"></i>@lang('Lifetime Support')</li>
                                 </ul>
                             </div>
                             <div class="single_plan__foter mb-20">
                                 <a href="{{ route('user.payment', $item->id) }}" class="theme_btn style_1"><span
-                                        class="btn_title">@lang('Buy
-                                                        Now ')<i class="fa-solid fa-angles-right"></i></span>
+                                        class="btn_title">@lang('Buy Now ')<i class="fa-solid fa-angles-right"></i></span>
                                 </a>
                             </div>
                         </div>
