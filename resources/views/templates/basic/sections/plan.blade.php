@@ -27,7 +27,7 @@
                         </div>
                         <div class="single_plan__body mb-35">
                             <ul>
-                                @if ($plan->plan_type == 'landlord')
+                                @if ($item->plan_type == 'landlord')
                                     <li><i class="fa-solid fa-check"></i>{{ __($item->listing_limit) }}
                                         @lang('Listings Per ') {{ $item->validity }} days</li>
                                 @endif

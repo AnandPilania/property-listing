@@ -31,7 +31,7 @@
                             <hr>
                             <div class="single_plan__body mb-35">
                                 <ul>
-                                    @if ($plan->plan_type == 'landlord')
+                                    @if ($item->plan_type == 'landlord')
                                         <li><i class="fa-solid fa-check"></i>{{ __($item->listing_limit) }}
                                             @lang('Listings Per ') {{ $item->validity }} days
                                         </li>
@@ -43,7 +43,7 @@
                             </div>
                             <div class="single_plan__foter mb-20">
                                 <a href="{{ route('user.payment', $item->id) }}" class="theme_btn style_1"><span
-                                        class="btn_title">@lang('Buy Now ')<i class="fa-solid fa-angles-right"></i></span>
+                                        class="btn_title">@lang('Buy Now')<i class="fa-solid fa-angles-right"></i></span>
                                 </a>
                             </div>
                         </div>

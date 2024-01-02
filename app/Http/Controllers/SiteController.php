@@ -163,9 +163,9 @@ class SiteController extends Controller
         $gatewayCurrency = GatewayCurrency::whereHas('method', function ($gate) {
             $gate->where('status', 1);
         })->with('method')->orderby('method_code')->get();
-        if (Auth::user() && Auth::user()->is_landlord == true) {
+        if (Auth::user() && Auth::user()->is_landlord == 1) {
             $plans = Plan::where('plan_type', 'landlord')->orderBy('id', 'desc')->paginate(getPaginate());
-        } elseif (Auth::user() && Auth::user()->is_landlord == false) {
+        } elseif (Auth::user() && Auth::user()->is_landlord == 0) {
             $plans = Plan::where('plan_type', 'user')->orderBy('id', 'desc')->paginate(getPaginate());
         } else {
             $plans = Plan::orderBy('id', 'desc')->paginate(getPaginate());

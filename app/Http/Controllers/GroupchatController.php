@@ -105,6 +105,9 @@ class GroupchatController extends Controller
                 // Include other advanced search fields here
             }
 
+            $query->where('is_landlord', 0);
+            $query->where('id', '!=', Auth::id());
+
             $results = $query->paginate(getPaginate(20));
 
             // dd($results);
