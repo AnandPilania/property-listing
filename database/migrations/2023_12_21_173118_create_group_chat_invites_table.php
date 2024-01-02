@@ -23,12 +23,12 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('invitee_id')
-                ->references('id')
+                ->references('messageable_id')
                 ->on(ConfigurationManager::PARTICIPATION_TABLE)
                 ->onDelete('set null');
 
             $table->foreign('inviter_id')
-                ->references('id')
+                ->references('messageable_id')
                 ->on(ConfigurationManager::PARTICIPATION_TABLE)
                 ->onDelete('set null');
 
