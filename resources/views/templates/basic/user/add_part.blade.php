@@ -11,12 +11,13 @@
                         Add Prticipants to <b> {{ $conversation->data['name'] }}</b>
                         <hr>
 
-                        <form action="{{ route('conversation.search_users', $conversation->id) }}" method="GET">
+                        <form action="{{ route('conversation.search_users', $conversation->id) }}" method="GET" id="sForm">
                             {{-- @csrf --}}
                             <div class="mb-3 col-sm-12">
                                 <label for="username" class="form-label">Username:</label>
                                 <input type="text" class="form-control" id="username" name="username"
                                     placeholder="Enter username">
+                                <span class = "text-danger" id="usernameErr"></span>
                             </div>
 
                             <!-- Toggle Advanced Search Button -->
@@ -35,6 +36,7 @@
                                     <div class="mb-3 col-sm-6">
                                         <label for="gender" class="form-label">Gender:</label>
                                         <select class="form-select" id="gender" name="gender">
+                                            <option value="">--select--</option>
                                             <option value="Male">Male</option>
                                             <option value="Female">Female</option>
                                             <option value="Non-binary">Non-binary</option>
@@ -46,6 +48,7 @@
                                     <div class="mb-3 col-sm-6">
                                         <label for="petOwnership" class="form-label">Pet Ownership:</label>
                                         <select class="form-select" id="petOwnership" name="petOwnership">
+                                            <option value="">--select--</option>
                                             <option value="I own pets">I own pets</option>
                                             <option value="I am comfortable with pets">I am comfortable with pets</option>
                                             <option value="I prefer a pet-free environment">I prefer a pet-free environment
@@ -59,6 +62,7 @@
                                     <div class="mb-3 col-sm-6">
                                         <label for="ethnicity" class="form-label">Ethnicity:</label>
                                         <select class="form-select" id="ethnicity" name="ethnicity">
+                                            <option value="">--select--</option>
                                             <option value="Asian">Asian</option>
                                             <option value="Black/African American">Black/African American</option>
                                             <option value="Hispanic/Latino">Hispanic/Latino</option>
@@ -73,6 +77,7 @@
                                         <label for="nationality" class="form-label">Nationality:</label>
                                         <div class="single-input_">
                                             <select name="nationality" class="form-control">
+                                                <option value="">--select--</option>
                                                 @foreach ($countries as $key => $country)
                                                     <option value="{{ $country->country }}"
                                                         {{ @$user->address->nationality == $country->country ? 'selected' : '' }}>
@@ -88,7 +93,7 @@
 
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Search</button>
+                            <button type="button" onclick="return checkUsername()" class="btn btn-primary">Search</button>
                             <button type="submit" class="btn btn-primary">Show All Users</button>
                         </form>
                         <hr>
@@ -197,5 +202,17 @@
             var advancedSearchFields = document.getElementById('advancedSearchFields');
             advancedSearchFields.style.display = this.checked ? 'block' : 'none';
         });
+
+        function checkUsername(){
+            let u = document.getElementById('username').value;
+            if(u == ''){
+                if(document.getElementById('toggleAdvancedSearch').checked == false){
+                    document.getElementById('usernameErr').innerText = 'please specify a username, or toggle advanced search';
+                    return false;
+                }
+            }
+
+            document.getElementById('sForm').submit();
+        }
     </script>
 @endsection
