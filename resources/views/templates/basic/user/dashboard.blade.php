@@ -59,46 +59,48 @@
                             <hr>
                             <div class="row gy-4">
                                 @foreach ($plan as $plan)
-                                    <div class="col-xl-4 col-lg-6">
-                                        <div class="subscribe">
-                                            @if ($plansubscribe)
-                                                <h6 class="number">{{ __($plan->name) }} -
-                                                    {{ $general->cur_sym }}{{ showAmount(__($plan->price)) }}</h6>
-                                                @if ($plan->plan_type == 'landlord')
-                                                    <p>{{ __($plan->listing_limit) }} @lang('Listings Per ')
+                                    @if ($plan->id == $plansubscribe->plan_id)
+                                        <div class="col-xl-4 col-lg-6">
+                                            <div class="subscribe">
+                                                @if ($plansubscribe)
+                                                    <h6 class="number">{{ __($plan->name) }} -
+                                                        {{ $general->cur_sym }}{{ showAmount(__($plan->price)) }}</h6>
+                                                    @if ($plan->plan_type == 'landlord')
+                                                        <p>{{ __($plan->listing_limit) }} @lang('Listings Per ')
+                                                            {{ $plan->validity }} days</p>
+                                                        <p>{{ __($plansubscribe->listings_left) }} @lang('Listings available')</p>
+                                                    @endif
+                                                    <p>{{ __($plan->inquiries_limit) }} @lang('Inquiries Per ')
                                                         {{ $plan->validity }} days</p>
-                                                    <p>{{ __($plansubscribe->listings_left) }} @lang('Listings available')</p>
-                                                @endif
-                                                <p>{{ __($plan->inquiries_limit) }} @lang('Inquiries Per ')
-                                                    {{ $plan->validity }} days</p>
-                                                <p>{{ __($plansubscribe->inquiries_left) }} @lang('Inquiries available')</p>
-                                                <p class="get-support">@lang('Lifetime Support')</p>
-                                                @if ($plan->id == $plansubscribe->plan_id)
-                                                    <span class="badge bg--primary">@lang('Purchased')</span>
-                                                    <br>
-                                                    <span class="badge bg-secondary">@lang('Expires on: ')
-                                                        {{ date('jS M, Y g:ia', strtotime($plansubscribe->expire_date)) }}</span>
-                                                @else
-                                                    <a href="{{ route('user.payment', $plan->id) }}"
-                                                        class="theme_btn style_1 mb-10"><span
-                                                            class="btn_title">@lang('Buy
-                                                                                                                                                                                                                                                                                            Now ')<i
-                                                                class="fa-solid fa-angles-right"></i></span> </a>
+                                                    <p>{{ __($plansubscribe->inquiries_left) }} @lang('Inquiries available')</p>
+                                                    <p class="get-support">@lang('Lifetime Support')</p>
+                                                    @if ($plan->id == $plansubscribe->plan_id)
+                                                        <span class="badge bg--primary">@lang('Purchased')</span>
+                                                        <br>
+                                                        <span class="badge bg-secondary">@lang('Expires on: ')
+                                                            {{ date('jS M, Y g:ia', strtotime($plansubscribe->expire_date)) }}</span>
+                                                    @else
+                                                        <a href="{{ route('user.payment', $plan->id) }}"
+                                                            class="theme_btn style_1 mb-10"><span
+                                                                class="btn_title">@lang('Buy
+                                                                                                                                                                                                                                                                                                                                                            Now ')<i
+                                                                    class="fa-solid fa-angles-right"></i></span> </a>
+                                                    @endif
+
+                                                    @if ($plansubscribe->expire_date < now() && $plan->id == $plansubscribe->plan_id)
+                                                        <p class="badge text-bg-danger text-danger">
+                                                            (@lang('Expired'))
+                                                        </p>
+                                                    @endif
                                                 @endif
 
-                                                @if ($plansubscribe->expire_date < now() && $plan->id == $plansubscribe->plan_id)
-                                                    <p class="badge text-bg-danger text-danger">
-                                                        (@lang('Expired'))
-                                                    </p>
+                                                @if (!$plansubscribe)
+                                                    <h4 class="text-muted">@lang('No Plan')</h4>
                                                 @endif
-                                            @endif
 
-                                            @if (!$plansubscribe)
-                                                <h4 class="text-muted">@lang('No Plan')</h4>
-                                            @endif
-
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 @endforeach
 
                             </div>

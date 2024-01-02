@@ -99,6 +99,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('plans') }}"
+                        class='{{ Route::is('plans') ? 'active' : '' }}'>
+                        <i class="fa fa-bank"></i>@lang('Plans')
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('user.change.password') }}"
                         class='{{ Route::is('user.change.password') ? 'active' : '' }}'>
                         <i class="fa fa-lock"></i>@lang('Change Password')
