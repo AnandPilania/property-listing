@@ -1,6 +1,16 @@
 @php
     $plan = getContent('plan.content', true);
-    $plans = App\Models\Plan::orderBy('id')->get();
+    if (Auth::user() && Auth::user()->is_landlord == 1) {
+        $plans = App\Models\Plan::where('plan_type', 'landlord')
+            ->orderBy('id', 'desc')
+            ->paginate(getPaginate());
+    } elseif (Auth::user() && Auth::user()->is_landlord == 0) {
+        $plans = App\Models\Plan::where('plan_type', 'user')
+            ->orderBy('id', 'desc')
+            ->paginate(getPaginate());
+    } else {
+        $plans = App\Models\Plan::orderBy('id', 'desc')->paginate(getPaginate());
+    }
     $user = App\Models\PlanSubscribe::where('user_id', @auth()->user()->id)
         ->with('getUserPlanSubscribe')
         ->orderBy('id', 'desc')
@@ -25,6 +35,14 @@
                             <h4>{{ __($item->name) }}</h4>
                             <span>{{ __($general->cur_sym) }}{{ showAmount(__($item->price)) }}</span>
                         </div>
+                        <span>
+                            @if ($item->plan_type == 'user')
+                                <span class="text-sm badge bg-info">For Users</span>
+                            @else
+                                <span class="text-sm badge bg-info">For Landlords</span>
+                            @endif
+                        </span>
+                        <hr>
                         <div class="single_plan__body mb-35">
                             <ul>
                                 @if ($item->plan_type == 'landlord')
@@ -39,7 +57,7 @@
                         <div class="single_plan__foter mb-20">
                             <a href="{{ route('user.payment', $item->id) }}" class="theme_btn style_1"><span
                                     class="btn_title">@lang('Buy
-                                                    Now ')<i class="fa-solid fa-angles-right"></i></span>
+                                                                                        Now ')<i class="fa-solid fa-angles-right"></i></span>
                             </a>
                         </div>
                     </div>
