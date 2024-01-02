@@ -22,15 +22,15 @@ return new class extends Migration
             $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
             $table->timestamps();
 
-            $table->foreign('invitee_id')
-                ->references('messageable_id')
-                ->on(ConfigurationManager::PARTICIPATION_TABLE)
-                ->onDelete('set null');
+            // $table->foreign('invitee_id')
+            //     ->references('messageable_id')
+            //     ->on(ConfigurationManager::PARTICIPATION_TABLE)
+            //     ->onDelete('set null');
 
-            $table->foreign('inviter_id')
-                ->references('messageable_id')
-                ->on(ConfigurationManager::PARTICIPATION_TABLE)
-                ->onDelete('set null');
+            // $table->foreign('inviter_id')
+            //     ->references('messageable_id')
+            //     ->on(ConfigurationManager::PARTICIPATION_TABLE)
+            //     ->onDelete('set null');
 
             $table->foreign('conversation_id')
                 ->references('id')
