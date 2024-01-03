@@ -253,17 +253,21 @@ class SiteController extends Controller
         $bathrooms = PropertyInfo::groupBy('bathroom')->distinct()->pluck('bathroom');
         $rooms = PropertyInfo::groupBy('room')->distinct()->pluck('room');
 
-        $participantModel = User::where('id', auth()->id())->first();
-        if ($request->page) {
-            $page = $request->page;
-        } else {
-            $page = 1;
-        }
-        $chats = Chat::conversations()->setPaginationParams(['sorting' => 'desc', 'perPage' => 50, 'page' => $page])
-            ->setParticipant($participantModel)
-            ->get();
+        if (Auth::user()) {
+            $participantModel = User::where('id', auth()->id())->first();
+            if ($request->page) {
+                $page = $request->page;
+            } else {
+                $page = 1;
+            }
+            $chats = Chat::conversations()->setPaginationParams(['sorting' => 'desc', 'perPage' => 50, 'page' => $page])
+                ->setParticipant($participantModel)
+                ->get();
 
-        return view($this->activeTemplate . 'property_details', compact('rooms', 'bathrooms', 'cities', 'propertyTypes', 'latests', 'contacts', 'properties', 'pageTitle', 'chats'));
+            return view($this->activeTemplate . 'property_details', compact('rooms', 'bathrooms', 'cities', 'propertyTypes', 'latests', 'contacts', 'properties', 'pageTitle', 'chats'));
+        } else {
+            return view($this->activeTemplate . 'property_details', compact('rooms', 'bathrooms', 'cities', 'propertyTypes', 'latests', 'contacts', 'properties', 'pageTitle'));
+        }
     }
 
 
